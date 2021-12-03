@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div v-if="user">
     <h2>Dashboard</h2>
-    <p>Name: {{ user.name }}</p>
+    <p>User Name: {{ user.username }}</p>
+    <p>Display Name: {{ user.displayName }}</p>
+    <v-form v-on:submit="logout">
+      <v-btn class="loginButton" type="submit" value="Logout">Logout</v-btn>
+    </v-form>
   </div>
 </template>
 <script>
@@ -12,7 +16,8 @@ export default {
   data() {
     return {
       user: {
-        name: "Jesse",
+        username: "Jesse",
+        displayName: "jesse",
       },
     };
   },
@@ -24,6 +29,21 @@ export default {
         .then((response) => {
           console.log(response);
           self.$set(this, "user", response.data.user);
+        })
+        .catch((errors) => {
+          console.log(errors);
+          router.push("/");
+        });
+    },
+    logout: function () {
+      this.$cookies.keys().forEach((cookie) => this.$cookies.remove(cookie));
+      let self = this;
+      axios
+        .get("/api/logout")
+        .then((response) => {
+          console.log(response);
+          self.$set(this, "user", response.data.user);
+          router.push("/");
         })
         .catch((errors) => {
           console.log(errors);

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 style="padding-top: 100px; padding-bottom: 100px">Login Page</h1>
+    <h1 style="padding-top: 100px; padding-bottom: 100px">Register Page</h1>
     <v-spacer></v-spacer>
     <v-form v-model="valid" v-on:submit="login">
       <v-row>
@@ -8,13 +8,32 @@
           <v-text-field
             v-model="username"
             :rules="nameRules"
-            name="email"
+            name="username"
             label="User name"
             required
           ></v-text-field>
         </v-col>
       </v-row>
-
+      <v-row>
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-text-field
+            v-model="name"
+            name="name"
+            label="Name"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-text-field
+            v-model="role"
+            name="role"
+            label="User Role"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-text-field
@@ -32,24 +51,32 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-text-field
+            v-model="confirmpassword"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="passwordRules"
+            :type="show1 ? 'text' : 'confirmpassword'"
+            name="confirmpassword"
+            label="Confirm Password"
+            hint="At least 6 characters"
+            counter
+            @click:append="show1 = !show1"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-btn
           class="loginButton"
           type="submit"
           value="Login"
-          @click="alert = !alert"
           >Login</v-btn
         >
       </v-row>
     </v-form>
     <br /><br />
-    <v-btn @click="goToEvents()">Sign Up</v-btn>
-    <br /><br />
-    <v-row>
-      <v-alert :value="alert" type="error" dark>
-        User not found or password not match
-        <v-btn @click="alert = !alert"> close </v-btn>
-      </v-alert>
-    </v-row>
+
   </v-container>
 </template>
 
@@ -59,23 +86,26 @@ import axios from "axios";
 export default {
   name: "Login",
   methods: {
-    goToEvents: function () {
-      location.href = "#/register";
-    },
     login: (e) => {
       e.preventDefault();
-      let email = e.target.elements.email.value;
+      let username = e.target.elements.username.value;
+      let name = e.target.elements.name.value;
+      let role = e.target.elements.role.value;
       let password = e.target.elements.password.value;
+      let confirmpassword = e.target.elements.confirmpassword.value;
       let login = () => {
         let data = {
-          username: email,
+          username: username,
+          name: name,
+          role: role,
+          confirm_password: confirmpassword,
           password: password,
         };
         axios
-          .post("/api/login", data)
+          .post("/api/register", data)
           .then((response) => {
-            console.log("Logged in");
-            router.push({ path: "dashboard" });
+            console.log("register");
+            router.push("/");
           })
           .catch((errors) => {
             console.log("Cannot log in");
@@ -91,11 +121,14 @@ export default {
     show1: false,
     valid: false,
     username: "",
+    name: "",
+    role: "",
     nameRules: [
       (v) => !!v || "User Name is required",
       // (v) => v.length <= 10 || "Name must be less than 10 characters",
     ],
     password: "",
+    confirmpassword: "",
     passwordRules: [
       (v) => !!v || "Password is required",
       // (v) => /.+@.+/.test(v) || "E-mail must be valid",
