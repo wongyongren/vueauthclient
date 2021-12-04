@@ -36,7 +36,6 @@ export default {
         });
     },
     logout: function () {
-      this.$cookies.keys().forEach((cookie) => this.$cookies.remove(cookie));
       let self = this;
       axios
         .get("/api/logout")

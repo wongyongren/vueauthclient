@@ -8,7 +8,7 @@
           <v-text-field
             v-model="username"
             :rules="nameRules"
-            name="email"
+            name="username"
             label="User name"
             required
           ></v-text-field>
@@ -64,11 +64,11 @@ export default {
     },
     login: (e) => {
       e.preventDefault();
-      let email = e.target.elements.email.value;
+      let username = e.target.elements.username.value;
       let password = e.target.elements.password.value;
       let login = () => {
         let data = {
-          username: email,
+          username: username,
           password: password,
         };
         axios

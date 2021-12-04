@@ -54,9 +54,9 @@
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-text-field
             v-model="confirmpassword"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="passwordRules"
-            :type="show1 ? 'text' : 'confirmpassword'"
+            :type="show2 ? 'text' : 'password'"
             name="confirmpassword"
             label="Confirm Password"
             hint="At least 6 characters"
@@ -119,6 +119,7 @@ export default {
   data: () => ({
     alert: false,
     show1: false,
+    show2: false,
     valid: false,
     username: "",
     name: "",
