@@ -8,17 +8,5 @@
 <script>
 export default {
   name: "HelloWorld",
-  methods: {
-    validateBeforeSubmit() {
-      this.$validator
-        .validateAll()
-        .then(function (response) {
-          // Validation success if response === true
-        })
-        .catch(function (e) {
-          // Catch errors
-        });
-    },
-  },
 };
 </script>
