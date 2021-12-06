@@ -32,23 +32,21 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-btn
-          class="loginButton"
-          type="submit"
-          value="Login"
-          @click="alert = !alert"
-          >Login</v-btn
-        >
+        <v-btn class="loginButton" type="submit" value="Login" @click="snackbar = true">Login</v-btn>
       </v-row>
     </v-form>
     <br /><br />
     <v-btn @click="goToEvents()">Sign Up</v-btn>
     <br /><br />
     <v-row>
-      <v-alert :value="alert" type="error" dark>
+      <v-snackbar v-model="snackbar">
         User not found or password not match
-        <v-btn @click="alert = !alert"> close </v-btn>
-      </v-alert>
+        <template v-slot:action="{ attrs }">
+          <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-row>
   </v-container>
 </template>
@@ -78,16 +76,14 @@ export default {
             router.push({ path: "dashboard" });
           })
           .catch((errors) => {
-            console.log("Cannot log in");
             console.log(errors);
-            // alert(errors);
           });
       };
       login();
     },
   },
   data: () => ({
-    alert: false,
+    snackbar: false,
     show1: false,
     valid: false,
     username: "",

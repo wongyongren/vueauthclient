@@ -1,5 +1,6 @@
 <template>
   <div v-if="user">
+    <Header />
     <h2>Dashboard</h2>
     <p>User Name: {{ user.username }}</p>
     <p>Display Name: {{ user.displayName }}</p>
@@ -11,8 +12,13 @@
 <script>
 import axios from "axios";
 import router from "../router";
+import Header from "../components/header.vue";
+
 export default {
   name: "Login",
+  components: {
+    Header,
+  },
   data() {
     return {
       user: {
