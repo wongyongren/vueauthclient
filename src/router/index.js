@@ -4,6 +4,7 @@ import Login from "@/components/Login"
 import Dashboard from "@/components/Dashboard"
 import Register from "@/components/Register"
 import Home from "@/components/HelloWorld"
+import UserDashboard from "@/components/UserDashboard"
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: "/home",
       name: "Home",
       component: Home
+    },
+    {
+      path: "/userdashboard",
+      name: "UserDashboard",
+      component: UserDashboard
     }
   ]
 })

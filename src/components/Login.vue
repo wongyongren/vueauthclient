@@ -32,7 +32,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-btn class="loginButton" type="submit" value="Login" @click="snackbar = true">Login</v-btn>
+        <v-btn class="loginButton" type="submit" value="Login">Login</v-btn>
       </v-row>
     </v-form>
     <br /><br />
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import router from "../router";
 import axios from "axios";
 export default {
   name: "Login",
@@ -60,11 +59,12 @@ export default {
     goToEvents: function () {
       location.href = "#/register";
     },
-    login: (e) => {
+    login: function (e)  {
       e.preventDefault();
       let username = e.target.elements.username.value;
       let password = e.target.elements.password.value;
       let login = () => {
+        let self = this;
         let data = {
           username: username,
           password: password,
@@ -73,10 +73,21 @@ export default {
           .post("/api/login", data)
           .then((response) => {
             console.log("Logged in");
-            router.push({ path: "dashboard" });
+            if (response.data.role =="admin"){
+            this.$router.push("/dashboard").catch(() => {});
+            }
+            if (response.data.role =="user"){
+            this.$router.push("/userdashboard").catch(() => {});
+            }
           })
           .catch((errors) => {
             console.log(errors);
+            if (errors = "Request failed with status code 401")
+            {
+              //console.log("1231231232132132")
+              self.$set(this, "snackbar", true);
+            }
+            
           });
       };
       login();

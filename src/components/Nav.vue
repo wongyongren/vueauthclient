@@ -65,8 +65,8 @@ export default {
           self.$set(this, "user", response.data.user);
         })
         .catch((errors) => {
-          console.log(errors);
-          router.push("/");
+          // console.log(errors);
+          this.$router.push("/").catch(() => {});
         });
     },
     logout: function () {
@@ -76,11 +76,11 @@ export default {
         .then((response) => {
           console.log(response);
           self.$set(this, "user", response.data.user);
-          router.push("/");
+          this.$router.push("/").catch(() => {});
         })
         .catch((errors) => {
           console.log(errors);
-          router.push("/");
+          this.$router.push("/").catch(() => {});
         });
     },
   },

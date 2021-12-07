@@ -1,6 +1,5 @@
 <template>
   <div v-if="user">
-    <Header />
     <h2>Dashboard</h2>
     <p>User Name: {{ user.username }}</p>
     <p>Display Name: {{ user.displayName }}</p>
@@ -13,7 +12,7 @@
 <script>
 import axios from "axios";
 import router from "../router";
-import Header from "../components/header.vue";
+import Header from "./header.vue";
 
 export default {
   name: "Login",
@@ -33,7 +32,7 @@ export default {
     getUserData: function () {
       let self = this;
       axios
-        .get("/api/user")
+        .get("/api/user1")
         .then((response) => {
           //console.log(response);
           self.$set(this, "user", response.data.user);
@@ -41,9 +40,8 @@ export default {
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {
             //console.log("1231231232132132");
-            alert("You are not authorized to view this resource because you are not an admin.");
           }
-
+          console.log(errors);
           this.$router.push("/").catch(() => {});
         });
     },
