@@ -132,7 +132,7 @@ export default {
     },
   },
   data: () => ({
-    selectOption: ["User", "Supervisor"],
+    selectOption: ["User", "Supervisor","Admin"],
     alert: false,
     show1: false,
     show2: false,

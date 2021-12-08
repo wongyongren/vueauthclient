@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       user: {
-        username: "Jesse",
-        displayName: "jesse",
+        username: "",
+        displayName: "",
         role: "",
       },
     };
@@ -40,6 +40,7 @@ export default {
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {
             //console.log("1231231232132132");
+            alert("You are not authorized to view this resource because you are not an user.");
           }
           console.log(errors);
           this.$router.push("/").catch(() => {});

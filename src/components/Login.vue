@@ -73,10 +73,10 @@ export default {
           .post("/api/login", data)
           .then((response) => {
             console.log("Logged in");
-            if (response.data.role =="admin"){
+            if (response.data.role =="Admin" || response.data.role =="Supervisor"){
             this.$router.push("/dashboard").catch(() => {});
             }
-            if (response.data.role =="user"){
+            if (response.data.role =="User"){
             this.$router.push("/userdashboard").catch(() => {});
             }
           })

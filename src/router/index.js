@@ -3,9 +3,12 @@ import Router from "vue-router"
 import Login from "@/components/Login"
 import Dashboard from "@/components/Dashboard"
 import Register from "@/components/Register"
+import RegisterProject from "@/components/RegisterProject"
 import Home from "@/components/HelloWorld"
 import UserDashboard from "@/components/UserDashboard"
+import AssignWorker from "@/components/AssignWorker"
 
+AssignWorker
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +37,17 @@ export default new Router({
       path: "/userdashboard",
       name: "UserDashboard",
       component: UserDashboard
+    },
+    {
+      path: "/registerproject",
+      name: "RegisterProject",
+      component: RegisterProject
+    }
+    ,
+    {
+      path: "/assignworker",
+      name: "AssignWorker",
+      component: AssignWorker
     }
   ]
 })
