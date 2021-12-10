@@ -37,7 +37,7 @@
           ></v-select>
         </v-col>
       </v-row>
-      {{input.supervisor_name}}
+      
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
@@ -55,7 +55,7 @@
           ></v-select>
         </v-col>
       </v-row>
-      {{input.worker_name}}
+      
       <v-row>
         <v-btn
           :disabled="!valid"
@@ -76,33 +76,35 @@ export default {
   methods: {
     register: (e) => {
       e.preventDefault();
-      let projectname = e.target.elements.projectname.value;
-      let supervisorname = e.target.elements.supervisorname.value;
-      let workername = e.target.elements.workername.value;
+      let projectid = e.target.elements.projectname.value;
+      let supervisorid = e.target.elements.supervisorname.value;
+      let workerid = e.target.elements.workername.value;
       
-      console.log(workername)
-      console.log(supervisorname)
-      console.log(projectname)
-      // let register = () => {
-      //   let data = {
-      //     projectname: projectname,
-      //     supervisorname: supervisorname,
-      //   };
-      //   axios
-      //     .post("/api/registerproject", data)
-      //     .then((response) => {
-      //       console.log("register");
-      //       console.log(response);
-      //       alert("Success");
-      //       window.location.reload();
-      //     })
-      //     .catch((errors) => {
-      //       console.log("Cannot Register");
-      //       console.log(errors);
-      //       alert("Duplicate Project Name");
-      //     });
-      // };
-      //register();
+      workerid = workerid.split(",");
+      console.log(workerid);
+      console.log(supervisorid);
+      console.log(projectid);
+      let register = () => {
+        let data = {
+          projectid: projectid,
+          supervisorid: supervisorid,
+          workerid: workerid,
+        };
+        axios
+          .post("/api/assignproject", data)
+          .then((response) => {
+            console.log("register");
+            console.log(response);
+            // alert("Success");
+            // window.location.reload();
+          })
+          .catch((errors) => {
+            console.log("Cannot Register");
+            console.log(errors);
+            alert("Duplicate Project Name");
+          });
+      };
+      register();
     },
     getProjectData: function () {
       let self = this;
