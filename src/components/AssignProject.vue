@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h1 style="padding-top: 100px; padding-bottom: 100px">
-      Assign Worker to Project Site
-    </h1>
+    <h1 style="padding-top: 100px; padding-bottom: 100px">Assign Project</h1>
 
     <v-spacer></v-spacer>
 
@@ -17,6 +15,7 @@
             item-value="projectid"
             item-text="projectname"
             label="Project Name"
+            v-on:input="filtersupervisor"
             required
           ></v-select>
         </v-col>
@@ -32,12 +31,13 @@
             :menu-props="{ maxHeight: '400' }"
             name="supervisorname"
             label="Supervisor Name"
+            v-on:change="changeItem($event)"
             persistent-hint
             required
           ></v-select>
         </v-col>
       </v-row>
-      
+
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
@@ -54,7 +54,7 @@
           ></v-select>
         </v-col>
       </v-row>
-      
+
       <v-row>
         <v-btn
           :disabled="!valid"
@@ -78,7 +78,7 @@ export default {
       let projectid = e.target.elements.projectname.value;
       let supervisorid = e.target.elements.supervisorname.value;
       let workerid = e.target.elements.workername.value;
-      
+
       workerid = workerid.split(",");
       console.log(workerid);
       console.log(supervisorid);
@@ -104,6 +104,34 @@ export default {
           });
       };
       register();
+    },
+    changeItem: function changeItem(event) {
+      this.selected =
+        "rowId: " + rowId + ", target.value: " + event.target.value;
+    },
+    filtersupervisor: (e) => {
+      e.preventDefault();
+      let projectid = e.target.elements.projectname.value;
+      console.log(projectid);
+      let filtersupervisor = () => {
+        let data = {
+          projectid: projectid,
+        };
+        axios
+          .post("/api/filtersupervisor", data)
+          .then((response) => {
+            console.log("register");
+            console.log(response);
+            // alert("Success");
+            // window.location.reload();
+          })
+          .catch((errors) => {
+            console.log("Cannot Register");
+            console.log(errors);
+            alert("Duplicate Project Name");
+          });
+      };
+      filtersupervisor();
     },
     getProjectData: function () {
       let self = this;
@@ -167,7 +195,9 @@ export default {
     supervisorname: null,
     projectnameRules: [(v) => !!v || "Project is required to be select"],
     supervisornameRules: [(v) => !!v || "Supervisor is required to be select"],
-    workernameRules: [(v) => !!v || "At Least 1 Worker is required to be select"],
+    workernameRules: [
+      (v) => !!v || "At Least 1 Worker is required to be select",
+    ],
     input: {
       // user_id: "",
       project_name: null,
