@@ -15,7 +15,7 @@
             item-value="projectid"
             item-text="projectname"
             label="Project Name"
-            v-on:input="filtersupervisor"
+            @input="filtersupervisor"
             required
           ></v-select>
         </v-col>
@@ -24,15 +24,15 @@
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
             v-model="input.supervisor_name"
-            :items="workernameOption"
-            item-value="userid"
+            :items="supervisornameOption"
+            item-value="teamid"
             item-text="name"
             :rules="supervisornameRules"
             :menu-props="{ maxHeight: '400' }"
             name="supervisorname"
             label="Supervisor Name"
-            v-on:change="changeItem($event)"
             persistent-hint
+            @input="getWorkerData"
             required
           ></v-select>
         </v-col>
@@ -48,8 +48,6 @@
             item-value="userid"
             item-text="name"
             label="Worker Name"
-            multiple
-            chips
             persistent-hint
           ></v-select>
         </v-col>
@@ -65,6 +63,8 @@
         >
       </v-row>
     </v-form>
+    <br/>
+   project id  {{ input.project_name }} ,  team id {{ input.supervisor_name }} 
   </v-container>
 </template>
 
@@ -105,14 +105,9 @@ export default {
       };
       register();
     },
-    changeItem: function changeItem(event) {
-      this.selected =
-        "rowId: " + rowId + ", target.value: " + event.target.value;
-    },
-    filtersupervisor: (e) => {
-      e.preventDefault();
-      let projectid = e.target.elements.projectname.value;
-      console.log(projectid);
+    filtersupervisor: function (e) {
+      let self = this;
+      let projectid = e;
       let filtersupervisor = () => {
         let data = {
           projectid: projectid,
@@ -120,10 +115,14 @@ export default {
         axios
           .post("/api/filtersupervisor", data)
           .then((response) => {
-            console.log("register");
-            console.log(response);
-            // alert("Success");
-            // window.location.reload();
+            self.workernameOption = [];
+            self.supervisornameOption = [];
+            for (let i = 0; i < response.data.length; i++) {
+              console.log(JSON.parse(JSON.stringify(response.data[i])));
+              self.supervisornameOption.push(
+                JSON.parse(JSON.stringify(response.data[i]))
+              );
+            }
           })
           .catch((errors) => {
             console.log("Cannot Register");
@@ -155,42 +154,49 @@ export default {
         });
     },
     getWorkerData: function () {
+      let projectid = this.input.project_name;
+      let teamid = this.input.supervisor_name;
+      console.log(projectid, teamid);
       let self = this;
-      axios
-        .get("/api/workername")
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            self.workernameOption.push(
-              JSON.parse(JSON.stringify(response.data[i]))
-            );
-          }
-        })
-        .catch((errors) => {
-          if ((errors = "Request failed with status code 401")) {
-            //console.log("1231231232132132");
-            alert(
-              "You are not authorized to view this resource because you are not an admin."
-            );
-          }
-          this.$router.push("/").catch(() => {});
-        });
+      let getWorkerData = () => {
+        let data = {
+          projectid: projectid,
+          teamid: teamid,
+        };
+        axios
+          .post("/api/getworkerdata", data)
+          .then((response) => {
+            self.workernameOption = [];
+            for (let i = 0; i < response.data.length; i++) {
+              console.log(JSON.parse(JSON.stringify(response.data[i])));
+
+              self.projectid = JSON.parse(
+                JSON.stringify(response.data[i].teamid)
+              );
+              self.workernameOption.push(
+                JSON.parse(JSON.stringify(response.data[i]))
+              );
+            }
+          })
+          .catch((errors) => {
+            console.log("Cannot Register");
+            console.log(errors);
+            alert("Duplicate Project Name");
+          });
+      };
+      getWorkerData();
     },
   },
   mounted() {
     this.getProjectData();
-    this.getWorkerData();
-  },
-  computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword || "Password must match";
-    },
+    //this.getWorkerData();
   },
   data: () => ({
     valid: false,
+    projectid: "",
     projectnameOption: [],
     workernameOption: [],
-    projectlist: [],
+    supervisornameOption: [],
     multiValue: null,
     supervisorname: null,
     projectnameRules: [(v) => !!v || "Project is required to be select"],
@@ -199,7 +205,6 @@ export default {
       (v) => !!v || "At Least 1 Worker is required to be select",
     ],
     input: {
-      // user_id: "",
       project_name: null,
       supervisor_name: null,
       worker_name: null,
@@ -218,6 +223,4 @@ export default {
   flex-direction: column;
   align-content: space-around;
 }
-
-/* .loginButton:hover {background-color: white;} */
 </style>
