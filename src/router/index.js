@@ -8,6 +8,7 @@ import Home from "@/components/HelloWorld"
 import UserDashboard from "@/components/UserDashboard"
 import AssignWorker from "@/components/AssignWorker"
 import AssignProject from "@/components/AssignProject"
+import AssignSupervisor from "@/components/AssignSupervisor"
 
 AssignWorker
 Vue.use(Router)
@@ -53,6 +54,11 @@ export default new Router({
       path: "/assignproject",
       name: "AssignProject",
       component: AssignProject
+    },
+    {
+      path: "/assignsupervisor",
+      name: "AssignSupervisor",
+      component: AssignSupervisor
     }
   ]
 })
