@@ -13,7 +13,7 @@
             v-model="input.team_name"
             :items="teamnameOption"
             :rules="teamnameRules"
-            name="team_name"
+            name="teamname"
             item-value="teamid"
             item-text="teamname"
             label="Team Name"
@@ -27,8 +27,9 @@
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-text-field
             v-model="input.project_name"
-            name="project name"
+            name="projectname"
             label="Project Name"
+            item-value="teamid"
             autocomplete="off"
             disabled
           ></v-text-field>
@@ -44,7 +45,7 @@
             name="workername"
             item-value="userid"
             item-text="name"
-            label="Worker Name"
+            label="Supervisor Name"
             persistent-hint
             required
           ></v-select>
@@ -85,7 +86,7 @@ export default {
           workerid: workerid,
         };
         axios
-          .post("/api/assignproject", data)
+          .post("/api/assignsupervisor", data)
           .then((response) => {
             console.log("register");
             console.log(response);
