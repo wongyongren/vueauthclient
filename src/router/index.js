@@ -9,6 +9,8 @@ import UserDashboard from "@/components/UserDashboard"
 import AssignWorker from "@/components/AssignWorker"
 import AssignProject from "@/components/AssignProject"
 import AssignSupervisor from "@/components/AssignSupervisor"
+import UpdateAssignWorker from "@/components/UpdateAssignWorker"
+
 
 AssignWorker
 Vue.use(Router)
@@ -59,6 +61,12 @@ export default new Router({
       path: "/assignsupervisor",
       name: "AssignSupervisor",
       component: AssignSupervisor
+    }
+    ,
+    {
+      path: "/updateassignworker",
+      name: "UpdateAssignWorker",
+      component: UpdateAssignWorker
     }
   ]
 })
