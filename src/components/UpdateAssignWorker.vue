@@ -92,7 +92,6 @@
           ></v-select>
         </v-col>
       </v-row>
-
       <v-row>
         <v-btn
           :disabled="!valid"
@@ -145,7 +144,16 @@ export default {
 
       let team = e.target.elements.teamname.value;
       let projectid = this.projectid;
-      let workerid = this.input.worker_name;
+      let workerid = (JSON.stringify(this.input.worker_name.sort()))
+
+      if (workerid == (JSON.stringify(this.compareworkername.sort())))
+      {
+        console.log("123")
+      }else
+      {
+      console.log(workerid)
+      console.log((JSON.stringify(this.compareworkername)))
+      }
       //   console.log(JSON.parse(JSON.stringify(e.target.elements.workername.value)))
       //     console.log(JSON.parse(JSON.stringify(this.input.worker_name)))
       //   workerid = workerid.split(",");
@@ -156,20 +164,20 @@ export default {
           projectid: projectid,
           teamid: e.target.elements.team_name.value,
           team: team,
-          workerid: workerid,
+          workerid: JSON.parse(workerid),
         };
         console.log(data);
-        axios
-          .post("/api/updateteammember", data)
-          .then((response) => {
-            console.log("register");
-            console.log(response);
-          })
-          .catch((errors) => {
-            console.log("Cannot Register");
-            console.log(errors);
-            alert("Duplicate Team Name");
-          });
+        // axios
+        //   .post("/api/updateteammember", data)
+        //   .then((response) => {
+        //     console.log("register");
+        //     console.log(response);
+        //   })
+        //   .catch((errors) => {
+        //     console.log("Cannot Register");
+        //     console.log(errors);
+        //     alert("Duplicate Team Name");
+        //   });
       };
       update();
     },
@@ -183,17 +191,34 @@ export default {
         axios
           .post("/api/filterteamworker", data)
           .then((response) => {
-            self.input.worker_name = [];
-            self.input.supervisor_name = [];
-            this.getSupervisorData();
-            this.getWorkerData();
-            self.projectid = response.data[0].projectid;
-            self.input.teamname = response.data[0].teamname;
-            self.input.project_name = response.data[0].projectname;
-            self.input.teamdescription = response.data[0].description;
-            self.teamdescription = response.data[0].description;
-            for (let i = 0; i < response.data.length; i++) {
-              self.input.worker_name.push(response.data[i]);
+            if (response.data.length != 0) {
+              self.input.worker_name = [];
+              self.input.supervisor_name = [];
+              this.getSupervisorData();
+              this.getWorkerData();
+              self.projectid = response.data[0].projectid;
+              self.input.teamname = response.data[0].teamname;
+              self.input.project_name = response.data[0].projectname;
+              self.input.teamdescription = response.data[0].description;
+              self.teamdescription = response.data[0].description;
+              for (let i = 0; i < response.data.length; i++) {
+                self.input.worker_name.push(response.data[i].userid);
+              }
+              this.compareworkername = self.input.worker_name
+              // console.log(this.compareworkername)
+            } else {
+              axios.post("/api/teaminfo", data).then((response) => {
+                self.input.worker_name = [];
+                self.input.supervisor_name = [];
+                //this.getSupervisorData();
+                this.getWorkerData();
+                self.projectid = response.data[0].projectid;
+                self.input.teamname = response.data[0].teamname;
+                self.input.project_name = response.data[0].projectname;
+                self.input.teamdescription = response.data[0].description;
+                self.teamdescription = response.data[0].description;
+                console.log(response);
+              });
             }
           })
           .catch((errors) => {
@@ -213,6 +238,10 @@ export default {
         axios
           .post("/api/teamsupervisor", data)
           .then((response) => {
+            if(response.data.length == 0){
+              alert("This Team does not have Supervisor. Will direct to assign Supervisor page to assign Supervisor")
+              this.$router.push("/assignsupervisor").catch(() => {});
+            }
             for (let i = 0; i < response.data.length; i++) {
               self.input.supervisor_name.push(response.data[i]);
             }
@@ -236,9 +265,6 @@ export default {
         .get("/api/workername")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            console.log(response.data[i]);
-            //self.input.worker_name.push(response.data[i]);
-
             self.supervisornameOption.push(response.data[i]);
             self.workernameOption.push(response.data[i]);
           }
@@ -264,7 +290,6 @@ export default {
         })
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {
-            //console.log("1231231232132132");
             alert(
               "You are not authorized to view this resource because you are not an admin."
             );
@@ -277,17 +302,15 @@ export default {
     this.getTeamData();
   },
   data: () => ({
+    compareworkername:[],
     valid: false,
     projectid: null,
     teamdescription: null,
-    // projectnameOption: [],
     workernameOption: [],
     supervisornameOption: [],
-    // projectlist: [],
-    // multiValue: null,
     teamnameOption: [],
     supervisorname: null,
-    projectnameRules: [(v) => !!v || "Project is required to be select"],
+    // projectnameRules: [(v) => !!v || "Project is required to be select"],
     teamnameRules: [(v) => !!v || "Team Name & Description is required"],
     workernameRules: [
       (v) => !!v || "At Least 1 Worker is required to be select",
