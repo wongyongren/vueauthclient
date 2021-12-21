@@ -18,7 +18,7 @@
             item-text="teamname"
             label="Select Team Name"
             persistent-hint
-            @input="filtersupervisor"
+            @input="filterteammember"
             required
           ></v-select>
         </v-col>
@@ -173,11 +173,10 @@ export default {
       };
       update();
     },
-    filtersupervisor: function (e) {
-      e.reload;
+    filterteammember: function (e) {
       let self = this;
       let teamid = self.input.team_name;
-      let filtersupervisor = () => {
+      let filterteammember = () => {
         let data = {
           teamid: teamid,
         };
@@ -194,23 +193,19 @@ export default {
             self.input.teamdescription = response.data[0].description;
             self.teamdescription = response.data[0].description;
             for (let i = 0; i < response.data.length; i++) {
-              console.log(response.data[i]);
-
               self.input.worker_name.push(response.data[i]);
-              //self.workernameOption.push(response.data[i]);
             }
           })
           .catch((errors) => {
             console.log("Cannot Register");
             console.log(errors);
-            alert("worker error");
+            alert("Current Worker Name List Error");
           });
       };
-      filtersupervisor();
+      filterteammember();
     },
     getSupervisorData: function () {
       let self = this;
-      console.log(self.input.team_name);
       let filtersupervisor = () => {
         let data = {
           teamid: self.input.team_name,
@@ -219,45 +214,42 @@ export default {
           .post("/api/teamsupervisor", data)
           .then((response) => {
             for (let i = 0; i < response.data.length; i++) {
-              console.log(response.data[i]);
-              //self.input.worker_name.push(response.data[i]);
-
               self.input.supervisor_name.push(response.data[i]);
             }
           })
           .catch((errors) => {
             console.log("Cannot Register");
             console.log(errors);
-            alert("worker error");
+            alert("supervisor name list error");
           });
       };
       filtersupervisor();
     },
     getWorkerData: function () {
       let self = this;
-      console.log(self.input.team_name);
-      let filterworker = () => {
-        let data = {
-          teamid: self.input.team_name,
-        };
-        axios
-          .get("/api/workername")
-          .then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              console.log(response.data[i]);
-              //self.input.worker_name.push(response.data[i]);
+      // console.log(self.input.team_name);
+      // let filterworker = () => {
+      //   let data = {
+      //     teamid: self.input.team_name,
+      //   };
+      axios
+        .get("/api/workername")
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            console.log(response.data[i]);
+            //self.input.worker_name.push(response.data[i]);
 
-              self.supervisornameOption.push(response.data[i]);
-              self.workernameOption.push(response.data[i]);
-            }
-          })
-          .catch((errors) => {
-            console.log("Cannot Register");
-            console.log(errors);
-            alert("worker error");
-          });
-      };
-      filterworker();
+            self.supervisornameOption.push(response.data[i]);
+            self.workernameOption.push(response.data[i]);
+          }
+        })
+        .catch((errors) => {
+          console.log("Cannot Register");
+          console.log(errors);
+          alert("worker name list error");
+        });
+      //};
+      //filterworker();
     },
     getTeamData: function () {
       let self = this;
@@ -282,19 +274,17 @@ export default {
     },
   },
   mounted() {
-    //this.getWorkerData();
     this.getTeamData();
   },
   data: () => ({
-    isEditing: false,
     valid: false,
     projectid: null,
     teamdescription: null,
-    projectnameOption: [],
+    // projectnameOption: [],
     workernameOption: [],
     supervisornameOption: [],
-    projectlist: [],
-    multiValue: null,
+    // projectlist: [],
+    // multiValue: null,
     teamnameOption: [],
     supervisorname: null,
     projectnameRules: [(v) => !!v || "Project is required to be select"],
