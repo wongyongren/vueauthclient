@@ -6,7 +6,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-form v-model="valid" v-on:submit="update">
+    <v-form v-model="valid" v-on:submit.prevent="update">
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
@@ -60,7 +60,22 @@
           ></v-text-field>
         </v-col>
       </v-row>
-
+      <v-row>
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-select
+            v-model="input.supervisor_name"
+            :items="supervisornameOption"
+            :rules="workernameRules"
+            name="supervisorname"
+            item-value="userid"
+            item-text="name"
+            label="Display Supervisor Name"
+            multiple
+            chips
+            persistent-hint
+          ></v-select>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
@@ -158,7 +173,8 @@ export default {
       };
       update();
     },
-    filtersupervisor: function () {
+    filtersupervisor: function (e) {
+      e.reload;
       let self = this;
       let teamid = self.input.team_name;
       let filtersupervisor = () => {
@@ -168,6 +184,9 @@ export default {
         axios
           .post("/api/filterteamworker", data)
           .then((response) => {
+            self.input.worker_name = [];
+            self.input.supervisor_name = [];
+            this.getSupervisorData();
             this.getWorkerData();
             self.projectid = response.data[0].projectid;
             self.input.teamname = response.data[0].teamname;
@@ -179,6 +198,31 @@ export default {
 
               self.input.worker_name.push(response.data[i]);
               //self.workernameOption.push(response.data[i]);
+            }
+          })
+          .catch((errors) => {
+            console.log("Cannot Register");
+            console.log(errors);
+            alert("worker error");
+          });
+      };
+      filtersupervisor();
+    },
+    getSupervisorData: function () {
+      let self = this;
+      console.log(self.input.team_name);
+      let filtersupervisor = () => {
+        let data = {
+          teamid: self.input.team_name,
+        };
+        axios
+          .post("/api/teamsupervisor", data)
+          .then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+              console.log(response.data[i]);
+              //self.input.worker_name.push(response.data[i]);
+
+              self.input.supervisor_name.push(response.data[i]);
             }
           })
           .catch((errors) => {
@@ -202,6 +246,8 @@ export default {
             for (let i = 0; i < response.data.length; i++) {
               console.log(response.data[i]);
               //self.input.worker_name.push(response.data[i]);
+
+              self.supervisornameOption.push(response.data[i]);
               self.workernameOption.push(response.data[i]);
             }
           })
@@ -246,6 +292,7 @@ export default {
     teamdescription: null,
     projectnameOption: [],
     workernameOption: [],
+    supervisornameOption: [],
     projectlist: [],
     multiValue: null,
     teamnameOption: [],
@@ -257,7 +304,7 @@ export default {
     ],
     input: {
       project_name: null,
-      supervisor_name: null,
+      supervisor_name: [],
       worker_name: [],
       team_name: null,
       teamname: null,
