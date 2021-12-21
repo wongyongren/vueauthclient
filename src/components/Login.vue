@@ -57,7 +57,7 @@ export default {
   name: "Login",
   methods: {
     goToEvents: function () {
-      location.href = "#/register";
+      location.href = "/register";
     },
     login: function (e)  {
       e.preventDefault();

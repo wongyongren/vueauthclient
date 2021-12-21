@@ -12,10 +12,11 @@ import AssignSupervisor from "@/components/AssignSupervisor"
 import UpdateAssignWorker from "@/components/UpdateAssignWorker"
 
 
-AssignWorker
+
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: "/",
