@@ -139,123 +139,51 @@ export default {
         };
         updateteamname();
       } else {
-        // console.log("same team name and description");
+        console.log("same");
       }
 
       let team = e.target.elements.teamname.value;
       let projectid = this.projectid;
-      let workerid = JSON.stringify(this.input.worker_name.sort());
+      let workerid = (JSON.stringify(this.input.worker_name.sort()))
 
-      if (workerid == JSON.stringify(this.compareworkername.sort())) {
-        console.log("123");
-      } else {
-        console.log(workerid);
-        console.log(JSON.stringify(this.compareworkername));
-
-
-        // to check which worker is deleted
-        let array1 = this.compareworkername.filter(
-          (val) => !workerid.includes(val)
-        );
-        // to check which worker to insert
-        let array2 = this.input.worker_name
-          .sort()
-          .filter((val) => !this.compareworkername.includes(val));
-        if (array1.length != 0) {
-          //console.log(array1);
-          console.log(array1);
-          workerid = array1.toString().split(",");
-          console.log(workerid);
-          let update = () => {
-            let data = {
-              projectid: projectid,
-              teamid: e.target.elements.team_name.value,
-              team: team,
-              workerid: workerid,
-            };
-            console.log(data);
-            axios
-              .post("/api/deleteteammember", data)
-              .then((response) => {
-                console.log("Success");
-                console.log(response);
-              })
-              .catch((errors) => {
-                console.log("Cannot Delete Team Member");
-                console.log(errors);
-                alert("Cannot Delete Team Member");
-              });
-          };
-          update();
-        }
-        if (array2.length != 0) {
-          console.log(array2);
-          workerid = array2.toString().split(",");
-          console.log(workerid);
-          let update = () => {
-            let data = {
-              projectid: projectid,
-              teamid: e.target.elements.team_name.value,
-              team: team,
-              workerid: workerid,
-            };
-            console.log(data);
-            axios
-              .post("/api/insertteammember", data)
-              .then((response) => {
-                console.log("Success");
-                console.log(response);
-              })
-              .catch((errors) => {
-                console.log("Cannot insert Team Member");
-                console.log(errors);
-                alert("Cannot insert Team Member");
-              });
-          };
-          update();
-        }
-        window.location.reload();
+      if (workerid == (JSON.stringify(this.compareworkername.sort())))
+      {
+        console.log("123")
+      }else
+      {
+      console.log(workerid)
+      console.log((JSON.stringify(this.compareworkername)))
       }
       //   console.log(JSON.parse(JSON.stringify(e.target.elements.workername.value)))
       //     console.log(JSON.parse(JSON.stringify(this.input.worker_name)))
       //   workerid = workerid.split(",");
       //   console.log(workerid);
       //   console.log(projectid);
-      // let update = () => {
-      //   let data = {
-      //     projectid: projectid,
-      //     teamid: e.target.elements.team_name.value,
-      //     team: team,
-      //     workerid: JSON.parse(workerid),
-      //   };
-      //   console.log(data);
-      //   // axios
-      //   //   .post("/api/updateteammember", data)
-      //   //   .then((response) => {
-      //   //     console.log("register");
-      //   //     console.log(response);
-      //   //   })
-      //   //   .catch((errors) => {
-      //   //     console.log("Cannot Register");
-      //   //     console.log(errors);
-      //   //     alert("Duplicate Team Name");
-      //   //   });
-      // };
-      // update();
-    },
-    emptyForm : function () {
-      //this.input.team_name = null
-      this.input.teamname = null
-      this.input.teamdescription = null
-      this.input.project_name = null
-      this.input.supervisor_name = []
-      this.input.worker_name = []
-      this.compareworkername = []
+      let update = () => {
+        let data = {
+          projectid: projectid,
+          teamid: e.target.elements.team_name.value,
+          team: team,
+          workerid: JSON.parse(workerid),
+        };
+        console.log(data);
+        // axios
+        //   .post("/api/updateteammember", data)
+        //   .then((response) => {
+        //     console.log("register");
+        //     console.log(response);
+        //   })
+        //   .catch((errors) => {
+        //     console.log("Cannot Register");
+        //     console.log(errors);
+        //     alert("Duplicate Team Name");
+        //   });
+      };
+      update();
     },
     filterteammember: function (e) {
       let self = this;
       let teamid = self.input.team_name;
-      
       let filterteammember = () => {
         let data = {
           teamid: teamid,
@@ -266,7 +194,6 @@ export default {
             if (response.data.length != 0) {
               self.input.worker_name = [];
               self.input.supervisor_name = [];
-              this.compareworkername = []
               this.getSupervisorData();
               this.getWorkerData();
               self.projectid = response.data[0].projectid;
@@ -277,13 +204,12 @@ export default {
               for (let i = 0; i < response.data.length; i++) {
                 self.input.worker_name.push(response.data[i].userid);
               }
-              this.compareworkername = self.input.worker_name;
+              this.compareworkername = self.input.worker_name
               // console.log(this.compareworkername)
             } else {
               axios.post("/api/teaminfo", data).then((response) => {
                 self.input.worker_name = [];
                 self.input.supervisor_name = [];
-                this.compareworkername = []
                 //this.getSupervisorData();
                 this.getWorkerData();
                 self.projectid = response.data[0].projectid;
@@ -312,10 +238,8 @@ export default {
         axios
           .post("/api/teamsupervisor", data)
           .then((response) => {
-            if (response.data.length == 0) {
-              alert(
-                "This Team does not have Supervisor. Will direct to assign Supervisor page to assign Supervisor"
-              );
+            if(response.data.length == 0){
+              alert("This Team does not have Supervisor. Will direct to assign Supervisor page to assign Supervisor")
               this.$router.push("/assignsupervisor").catch(() => {});
             }
             for (let i = 0; i < response.data.length; i++) {
@@ -378,7 +302,7 @@ export default {
     this.getTeamData();
   },
   data: () => ({
-    compareworkername: [],
+    compareworkername:[],
     valid: false,
     projectid: null,
     teamdescription: null,

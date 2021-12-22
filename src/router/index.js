@@ -10,6 +10,7 @@ import AssignWorker from "@/components/AssignWorker"
 import AssignProject from "@/components/AssignProject"
 import AssignSupervisor from "@/components/AssignSupervisor"
 import UpdateAssignWorker from "@/components/UpdateAssignWorker"
+import test from "@/components/test"
 
 
 
@@ -68,6 +69,12 @@ export default new Router({
       path: "/updateassignworker",
       name: "UpdateAssignWorker",
       component: UpdateAssignWorker
+    }
+    ,
+    {
+      path: "/test",
+      name: "test",
+      component: test
     }
   ]
 })
