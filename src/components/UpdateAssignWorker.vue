@@ -113,11 +113,11 @@ export default {
     update: function (e) {
       e.preventDefault();
       if (
-        e.target.elements.teamname.value !== this.teamnameOption[0].teamname ||
+        e.target.elements.teamname.value !== this.teamname ||
         e.target.elements.teamdescription.value !== this.teamdescription
       ) {
         console.log(e.target.elements.teamname.value);
-        console.log(this.teamnameOption[0].teamname);
+        console.log(this.teamname);
         let updateteamname = () => {
           let data = {
             teamname: e.target.elements.teamname.value,
@@ -139,20 +139,86 @@ export default {
         };
         updateteamname();
       } else {
-        // console.log("same team name and description");
+        console.log("same team name and description");
       }
+      this.updateteamsupervisorname(e);
+      this.updateteammembername(e);
+      window.location.reload();
+    },
+    updateteamsupervisorname: function (e) {
+      let team = e.target.elements.teamname.value;
+      let projectid = this.projectid;
+      let workerid = JSON.stringify(this.input.supervisor_name.sort());
 
+      if (workerid == JSON.stringify(this.comparesupervisorname.sort())) {
+        console.log("Same");
+      } else {
+        // to check which worker is deleted
+        let array1 = this.comparesupervisorname.filter(
+          (val) => !workerid.includes(val)
+        );
+        // to check which worker to insert
+        let array2 = this.input.supervisor_name
+          .sort()
+          .filter((val) => !this.comparesupervisorname.includes(val));
+        if (array1.length != 0) {
+          workerid = array1.toString().split(",");
+          let update = () => {
+            let data = {
+              projectid: projectid,
+              teamid: e.target.elements.team_name.value,
+              team: team,
+              workerid: workerid,
+            };
+            console.log(data);
+            axios
+              .post("/api/deleteteamsupervisor", data)
+              .then((response) => {
+                console.log("Success");
+                console.log(response);
+              })
+              .catch((errors) => {
+                console.log("Cannot Delete Team Member");
+                console.log(errors);
+                alert("Cannot Delete Team Member");
+              });
+          };
+          update();
+        }
+        if (array2.length != 0) {
+          workerid = array2.toString().split(",");
+          let update = () => {
+            let data = {
+              projectid: projectid,
+              teamid: e.target.elements.team_name.value,
+              team: team,
+              workerid: workerid,
+            };
+            console.log(data);
+            axios
+              .post("/api/insertteamsupervisor", data)
+              .then((response) => {
+                console.log("Success");
+                console.log(response);
+              })
+              .catch((errors) => {
+                console.log("Cannot insert Team Member");
+                console.log(errors);
+                alert("Cannot insert Team Member");
+              });
+          };
+          update();
+        }
+      }
+    },
+    updateteammembername: function (e) {
       let team = e.target.elements.teamname.value;
       let projectid = this.projectid;
       let workerid = JSON.stringify(this.input.worker_name.sort());
 
       if (workerid == JSON.stringify(this.compareworkername.sort())) {
-        console.log("123");
+        console.log("Same");
       } else {
-        console.log(workerid);
-        console.log(JSON.stringify(this.compareworkername));
-
-
         // to check which worker is deleted
         let array1 = this.compareworkername.filter(
           (val) => !workerid.includes(val)
@@ -162,10 +228,9 @@ export default {
           .sort()
           .filter((val) => !this.compareworkername.includes(val));
         if (array1.length != 0) {
-          //console.log(array1);
-          console.log(array1);
+
           workerid = array1.toString().split(",");
-          console.log(workerid);
+
           let update = () => {
             let data = {
               projectid: projectid,
@@ -173,7 +238,6 @@ export default {
               team: team,
               workerid: workerid,
             };
-            console.log(data);
             axios
               .post("/api/deleteteammember", data)
               .then((response) => {
@@ -189,9 +253,7 @@ export default {
           update();
         }
         if (array2.length != 0) {
-          console.log(array2);
           workerid = array2.toString().split(",");
-          console.log(workerid);
           let update = () => {
             let data = {
               projectid: projectid,
@@ -199,7 +261,6 @@ export default {
               team: team,
               workerid: workerid,
             };
-            console.log(data);
             axios
               .post("/api/insertteammember", data)
               .then((response) => {
@@ -214,48 +275,23 @@ export default {
           };
           update();
         }
-        window.location.reload();
       }
-      //   console.log(JSON.parse(JSON.stringify(e.target.elements.workername.value)))
-      //     console.log(JSON.parse(JSON.stringify(this.input.worker_name)))
-      //   workerid = workerid.split(",");
-      //   console.log(workerid);
-      //   console.log(projectid);
-      // let update = () => {
-      //   let data = {
-      //     projectid: projectid,
-      //     teamid: e.target.elements.team_name.value,
-      //     team: team,
-      //     workerid: JSON.parse(workerid),
-      //   };
-      //   console.log(data);
-      //   // axios
-      //   //   .post("/api/updateteammember", data)
-      //   //   .then((response) => {
-      //   //     console.log("register");
-      //   //     console.log(response);
-      //   //   })
-      //   //   .catch((errors) => {
-      //   //     console.log("Cannot Register");
-      //   //     console.log(errors);
-      //   //     alert("Duplicate Team Name");
-      //   //   });
-      // };
-      // update();
     },
-    emptyForm : function () {
+    emptyForm: function () {
       //this.input.team_name = null
-      this.input.teamname = null
-      this.input.teamdescription = null
-      this.input.project_name = null
-      this.input.supervisor_name = []
-      this.input.worker_name = []
-      this.compareworkername = []
+      this.input.teamname = null;
+      this.input.teamdescription = null;
+      this.input.project_name = null;
+      this.input.supervisor_name = [];
+      this.input.worker_name = [];
+      this.compareworkername = [];
+      this.comparesupervisorname = [];
+      this.supervisornameOption = [];
     },
     filterteammember: function (e) {
       let self = this;
       let teamid = self.input.team_name;
-      
+
       let filterteammember = () => {
         let data = {
           teamid: teamid,
@@ -266,7 +302,9 @@ export default {
             if (response.data.length != 0) {
               self.input.worker_name = [];
               self.input.supervisor_name = [];
-              this.compareworkername = []
+              this.compareworkername = [];
+              this.comparesupervisorname = [];
+              this.supervisornameOption = [];
               this.getSupervisorData();
               this.getWorkerData();
               self.projectid = response.data[0].projectid;
@@ -274,8 +312,10 @@ export default {
               self.input.project_name = response.data[0].projectname;
               self.input.teamdescription = response.data[0].description;
               self.teamdescription = response.data[0].description;
+              self.teamname = response.data[0].teamname;
               for (let i = 0; i < response.data.length; i++) {
                 self.input.worker_name.push(response.data[i].userid);
+                self.supervisornameOption.push(response.data[i]);
               }
               this.compareworkername = self.input.worker_name;
               // console.log(this.compareworkername)
@@ -283,7 +323,9 @@ export default {
               axios.post("/api/teaminfo", data).then((response) => {
                 self.input.worker_name = [];
                 self.input.supervisor_name = [];
-                this.compareworkername = []
+                this.compareworkername = [];
+                this.comparesupervisorname = [];
+                this.supervisornameOption = [];
                 //this.getSupervisorData();
                 this.getWorkerData();
                 self.projectid = response.data[0].projectid;
@@ -291,7 +333,8 @@ export default {
                 self.input.project_name = response.data[0].projectname;
                 self.input.teamdescription = response.data[0].description;
                 self.teamdescription = response.data[0].description;
-                console.log(response);
+                self.teamname = response.data[0].teamname;
+                //console.log(response);
               });
             }
           })
@@ -319,8 +362,9 @@ export default {
               this.$router.push("/assignsupervisor").catch(() => {});
             }
             for (let i = 0; i < response.data.length; i++) {
-              self.input.supervisor_name.push(response.data[i]);
+              self.input.supervisor_name.push(response.data[i].userid);
             }
+            this.comparesupervisorname = self.input.supervisor_name;
           })
           .catch((errors) => {
             console.log("Cannot Register");
@@ -332,16 +376,10 @@ export default {
     },
     getWorkerData: function () {
       let self = this;
-      // console.log(self.input.team_name);
-      // let filterworker = () => {
-      //   let data = {
-      //     teamid: self.input.team_name,
-      //   };
       axios
         .get("/api/workername")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            self.supervisornameOption.push(response.data[i]);
             self.workernameOption.push(response.data[i]);
           }
         })
@@ -350,8 +388,6 @@ export default {
           console.log(errors);
           alert("worker name list error");
         });
-      //};
-      //filterworker();
     },
     getTeamData: function () {
       let self = this;
@@ -379,8 +415,10 @@ export default {
   },
   data: () => ({
     compareworkername: [],
+    comparesupervisorname: [],
     valid: false,
     projectid: null,
+    teamname: null,
     teamdescription: null,
     workernameOption: [],
     supervisornameOption: [],
