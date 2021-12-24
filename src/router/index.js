@@ -11,7 +11,7 @@ import AssignProject from "@/components/AssignProject"
 import AssignSupervisor from "@/components/AssignSupervisor"
 import UpdateAssignWorker from "@/components/UpdateAssignWorker"
 import test from "@/components/test"
-
+import Supervisor from "@/components/supervisor/Supervisor"
 
 
 Vue.use(Router)
@@ -63,18 +63,21 @@ export default new Router({
       path: "/assignsupervisor",
       name: "AssignSupervisor",
       component: AssignSupervisor
-    }
-    ,
+    },
     {
       path: "/updateassignworker",
       name: "UpdateAssignWorker",
       component: UpdateAssignWorker
-    }
-    ,
+    },
     {
       path: "/test",
       name: "test",
       component: test
+    },
+    {
+      path: "/supervisor",
+      name: "Supervisor",
+      component: Supervisor
     }
   ]
 })
