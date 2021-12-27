@@ -4,6 +4,7 @@ import Login from "@/components/Login"
 import Dashboard from "@/components/Dashboard"
 import Register from "@/components/Register"
 import RegisterProject from "@/components/RegisterProject"
+import RegisterWorker from "@/components/RegisterWorker"
 import Home from "@/components/HelloWorld"
 import UserDashboard from "@/components/UserDashboard"
 import AssignWorker from "@/components/AssignWorker"
@@ -48,6 +49,11 @@ export default new Router({
       path: "/registerproject",
       name: "RegisterProject",
       component: RegisterProject
+    },
+    {
+      path: "/registerworker",
+      name: "RegisterWorker",
+      component: RegisterWorker
     },
     {
       path: "/assignworker",

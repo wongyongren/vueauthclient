@@ -1,10 +1,10 @@
 <template>
   <div data-app>
+    <Header />
     <v-col>
-      
-        <h1>Supervisor Page</h1>
-        <br/>
-        <v-container class="supervisor">
+      <h1>Supervisor Page</h1>
+      <br />
+      <v-container class="supervisor">
         <Worker />
         <DateTimeIn />
         <DateTimeOut />
@@ -22,7 +22,7 @@
 
 <script>
 // @ is an alias to /src
-
+import Header from "@/components/header.vue";
 import DateTimeIn from "@/components/supervisor/DateTimeIn.vue";
 import DateTimeOut from "@/components/supervisor/DateTimeOut.vue";
 import Worker from "@/components/supervisor/Worker.vue";
@@ -33,6 +33,7 @@ export default {
     DateTimeIn,
     DateTimeOut,
     Worker,
+    Header,
   },
   methods: {
     submit: function () {

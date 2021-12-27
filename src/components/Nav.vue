@@ -76,11 +76,13 @@ export default {
         .then((response) => {
           console.log(response);
           self.$set(this, "user", response.data.user);
-          this.$router.push("/").catch(() => {});
+          //this.$router.push("/").catch(() => {});
+          router.push("/");
         })
         .catch((errors) => {
           console.log(errors);
-          this.$router.push("/").catch(() => {});
+          //this.$router.push("/").catch(() => {});
+          router.push("/");
         });
     },
   },

@@ -83,8 +83,8 @@
             :items="workernameOption"
             :rules="workernameRules"
             name="workername"
-            item-value="userid"
-            item-text="name"
+            item-value="employeeid"
+            item-text="employeename"
             label="Display Worker Name"
             multiple
             chips
@@ -313,12 +313,14 @@ export default {
               self.input.teamdescription = response.data[0].description;
               self.teamdescription = response.data[0].description;
               self.teamname = response.data[0].teamname;
+              console.log(response.data)
               for (let i = 0; i < response.data.length; i++) {
                 self.input.worker_name.push(response.data[i].userid);
+                console.log(self.input.worker_name)
                 self.supervisornameOption.push(response.data[i]);
               }
               this.compareworkername = self.input.worker_name;
-              // console.log(this.compareworkername)
+              //console.log(this.compareworkername)
             } else {
               axios.post("/api/teaminfo", data).then((response) => {
                 self.input.worker_name = [];
@@ -377,8 +379,9 @@ export default {
     getWorkerData: function () {
       let self = this;
       axios
-        .get("/api/workername")
+        .get("/api/employeename")
         .then((response) => {
+          console.log(response)
           for (let i = 0; i < response.data.length; i++) {
             self.workernameOption.push(response.data[i]);
           }

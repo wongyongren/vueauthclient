@@ -54,10 +54,12 @@ export default {
         .then((response) => {
           console.log(response);
           self.$set(this, "user", response.data.user);
-          this.$router.push("/").catch(() => {});
+          console.log("logout")
+          //this.$router.push("/").catch(() => {});
+          router.push("/");
         })
         .catch((errors) => {
-          router.push("/");
+          //router.push("/");
         });
     },
   },

@@ -31,6 +31,7 @@
         item-value="userid"
         item-text="name"
         label="Display Worker Name"
+        multiple
         persistent-hint
       ></v-select>
     </v-col>
