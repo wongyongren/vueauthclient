@@ -59,7 +59,7 @@ export default {
     goToEvents: function () {
       location.href = "/register";
     },
-    login: function (e)  {
+    login: function (e) {
       e.preventDefault();
       let username = e.target.elements.username.value;
       let password = e.target.elements.password.value;
@@ -73,21 +73,19 @@ export default {
           .post("/api/login", data)
           .then((response) => {
             console.log("Logged in");
-            if (response.data.role =="Admin" || response.data.role =="Supervisor"){
-            this.$router.push("/dashboard").catch(() => {});
+            if (response.data.role == 1) {
+              this.$router.push("/dashboard").catch(() => {});
             }
-            if (response.data.role =="User"){
-            this.$router.push("/userdashboard").catch(() => {});
+            if (response.data.role == 0) {
+              this.$router.push("/userdashboard").catch(() => {});
             }
           })
           .catch((errors) => {
             console.log(errors);
-            if (errors = "Request failed with status code 401")
-            {
+            if ((errors = "Request failed with status code 401")) {
               //console.log("1231231232132132")
               self.$set(this, "snackbar", true);
             }
-            
           });
       };
       login();

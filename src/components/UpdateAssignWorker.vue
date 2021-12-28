@@ -67,8 +67,8 @@
             :items="supervisornameOption"
             :rules="workernameRules"
             name="supervisorname"
-            item-value="userid"
-            item-text="name"
+            item-value="employeeid"
+            item-text="employeename"
             label="Display Supervisor Name"
             multiple
             chips
@@ -315,7 +315,7 @@ export default {
               self.teamname = response.data[0].teamname;
               console.log(response.data)
               for (let i = 0; i < response.data.length; i++) {
-                self.input.worker_name.push(response.data[i].userid);
+                self.input.worker_name.push(response.data[i].employeeid);
                 console.log(self.input.worker_name)
                 self.supervisornameOption.push(response.data[i]);
               }
@@ -364,7 +364,7 @@ export default {
               this.$router.push("/assignsupervisor").catch(() => {});
             }
             for (let i = 0; i < response.data.length; i++) {
-              self.input.supervisor_name.push(response.data[i].userid);
+              self.input.supervisor_name.push(response.data[i].employeeid);
             }
             this.comparesupervisorname = self.input.supervisor_name;
           })

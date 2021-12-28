@@ -45,7 +45,7 @@
             :items="workernameOption"
             :rules="workernameRules"
             name="workername"
-            item-value="userid"
+            item-value="employeeid"
             item-text="name"
             label="Worker Name"
             persistent-hint
