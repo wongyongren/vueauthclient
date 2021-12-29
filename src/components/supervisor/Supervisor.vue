@@ -328,7 +328,7 @@ export default {
     },
   },
   mounted() {
-    this.getUserData();
+    this.getUserData();// router at here
   },
 };
 </script>

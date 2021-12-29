@@ -63,7 +63,7 @@ export default {
       e.preventDefault();
       let username = e.target.elements.username.value;
       let password = e.target.elements.password.value;
-      let login = () => {
+
         let self = this;
         let data = {
           username: username,
@@ -72,11 +72,12 @@ export default {
         axios
           .post("/api/login", data)
           .then((response) => {
-            console.log("Logged in");
-            if (response.data.role == 1) {
+            console.log(response.data);
+            if (response.data.teamrole == 1) {
+              this.$router.push("/supervisor").catch(() => {});
+            }else if (response.data.role == 1) {
               this.$router.push("/dashboard").catch(() => {});
-            }
-            if (response.data.role == 0) {
+            }else if (response.data.role == 0) {
               this.$router.push("/userdashboard").catch(() => {});
             }
           })
@@ -87,8 +88,8 @@ export default {
               self.$set(this, "snackbar", true);
             }
           });
-      };
-      login();
+
+
     },
   },
   data: () => ({
