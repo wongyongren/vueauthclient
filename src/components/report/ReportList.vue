@@ -1,171 +1,94 @@
 <template>
-  <v-card style="position: unset">
-    <v-card-title>
-      Report List Time In
-      <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
-      <v-text-field
-        v-model="searchIn"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headersIn"
-      :items="listIn"
-      :search="searchIn"
-    ></v-data-table>
-    <v-spacer></v-spacer>
-    <v-card-title>
-      Report List Time Out
-      <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
-      <v-text-field
-        v-model="searchOut"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headersOut"
-      :items="listOut"
-      :search="searchOut"
-    ></v-data-table>
+  <v-card>
+    <table v-for="site in sites" :key="site" id="customers">
+      <tr>
+        <th style="background-color: black" colspan="3">{{ site.projectname }}</th>
+      </tr>
+      <tr>
+        <th>Worker Name</th>
+        <th>Worker In Time</th>
+        <th>Worker Out Time</th>
+      </tr>
+      <tr v-for="site in sites" :key="site">
+        <td>
+          {{site.employeename}}
+        </td>
+        <td >
+          {{site.datein + " " +site.clockin}}
+        </td>
+        <td >
+          {{site.dateout + " " +site.clockout}}
+        </td>
+      </tr>
+      <br />
+    </table>
+    {{ sites }}
     <v-btn class="button">Print the entire page</v-btn>
   </v-card>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      searchIn: "",
-      searchOut: "",
-      headersIn: [
-        {
-          text: "Time In",
-          align: "start",
-          value: "time",
-        },
-        { text: "Project Site", value: "site" },
-        { text: "Worker Name", value: "worker" },
-      ],
-      headersOut: [
-        {
-          text: "Time Out",
-          align: "start",
-          value: "time",
-        },
-        { text: "Project Site", value: "site" },
-        { text: "Worker Name", value: "worker" },
-      ],
-      listIn: [
-        {
-          time: "10:05",
-          site: "Suzhou",
-          worker: "Wong",
-        },
-        {
-          time: "10:06",
-          site: "HQ",
-          worker: "Phone",
-        },
-        {
-          time: "10:07",
-          site: "8 Tier",
-          worker: "Zion",
-        },
-        {
-          time: "10:08",
-          site: "Seletar",
-          worker: "A",
-        },
-        {
-          time: "11:05",
-          site: "Suzhou",
-          worker: "B",
-        },
-        {
-          time: "12:05",
-          site: "Seletar",
-          worker: "C",
-        },
-        {
-          time: "09:00",
-          site: "8 Tier",
-          worker: "D",
-        },
-        {
-          time: "10:30",
-          site: "HQ",
-          worker: "E",
-        },
-      ],
-      listOut: [
-        {
-          time: "13:30",
-          site: "Suzhou",
-          worker: "Wong",
-        },
-        {
-          time: "14:30",
-          site: "HQ",
-          worker: "Phone",
-        },
-        {
-          time: "10:07",
-          site: "8 Tier",
-          worker: "Zion",
-        },
-        {
-          time: "10:08",
-          site: "Seletar",
-          worker: "A",
-        },
-        {
-          time: "11:05",
-          site: "Suzhou",
-          worker: "B",
-        },
-        {
-          time: "12:05",
-          site: "Seletar",
-          worker: "C",
-        },
-        {
-          time: "09:05",
-          site: "8 Tier",
-          worker: "D",
-        },
-        {
-          time: "10:30",
-          site: "HQ",
-          worker: "E",
-        },
-      ],
+      sites: [],
     };
   },
   methods: {
-      getUserData: function () {
+    getUserData: function () {
       let self = this;
       axios
-        .get("/api/supervisor")
+        .get("/api/reportlist")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            self.selectOption.push(response.data[i]);
+            self.sites.push(response.data[i]);
+
           }
         })
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {
             console.log(errors);
-            alert(
-              "You are not authorized to view this resource because you are not an admin."
-            );
           }
         });
     },
-}
+  },
+  mounted() {
+    this.getUserData(); // router at here
+  },
 };
 </script>
+
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+  background-color: #ddd;
+}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: green;
+  color: white;
+}
+.printButton {
+  border-radius: 4px;
+}
+</style>
