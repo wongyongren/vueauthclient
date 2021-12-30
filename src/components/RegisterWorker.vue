@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 style="padding-top: 100px; padding-bottom: 100px">Register Page</h1>
+    <h1 style="padding-top: 100px; padding-bottom: 100px">Register User as Worker</h1>
     <v-spacer></v-spacer>
     <v-form v-model="valid" v-on:submit="register">
       <v-row>

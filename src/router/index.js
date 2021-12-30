@@ -4,7 +4,7 @@ import Login from "@/components/Login"
 import Dashboard from "@/components/Dashboard"
 import Register from "@/components/Register"
 import RegisterProject from "@/components/RegisterProject"
-//import RegisterWorker from "@/components/RegisterWorker"
+import RegisterWorker from "@/components/RegisterWorker"
 import UserDashboard from "@/components/UserDashboard"
 import CreateTeam from "@/components/CreateTeam"
 import AssignSupervisor from "@/components/AssignSupervisor"
@@ -43,11 +43,11 @@ export default new Router({
       name: "RegisterProject",
       component: RegisterProject
     },
-    // {
-    //   path: "/registerworker",
-    //   name: "RegisterWorker",
-    //   component: RegisterWorker
-    // },
+    {
+      path: "/registerworker",
+      name: "RegisterWorker",
+      component: RegisterWorker
+    },
     {
       path: "/createteam",
       name: "CreateTeam",
