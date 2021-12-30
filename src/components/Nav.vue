@@ -1,11 +1,11 @@
 <template>
-  <v-app-bar dark>
+  <v-app-bar app>
     <v-app-bar-nav-icon
-      class="hidden-md-and-up"
+      class="hidden-lg-and-up"
       @click="sidebar = !sidebar"
     ></v-app-bar-nav-icon>
     <v-navigation-drawer
-      class="hidden-md-and-up"
+      class="hidden-lg-and-up"
       v-model="sidebar"
       absolute
       temporary
@@ -21,18 +21,26 @@
         >
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar-title style="text-align: right">{{
-      user.username
-    }}</v-toolbar-title>
+    <v-toolbar-title class="pt-3" style="text-align: right">
+      <router-link to="/dashboard">
+        <img height="68" src="../assets/alricLogo.svg" />
+      </router-link>
+    </v-toolbar-title>
 
     <v-spacer></v-spacer>
 
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-toolbar-items class="hidden-md-and-down">
       <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">
         {{ item.title }}
       </v-btn>
     </v-toolbar-items>
-    <v-form v-on:submit="logout">
+    <v-spacer></v-spacer>
+
+    <div class="pr-4">
+      {{ user.username }}
+    </div>
+
+    <v-form v-if="user.username" v-on:submit="logout">
       <v-btn class="loginButton" type="submit" value="Logout">Logout</v-btn>
     </v-form>
   </v-app-bar>
@@ -44,50 +52,79 @@ import router from "../router";
 export default {
   data: function () {
     return {
+      role: null,
       sidebar: null,
       user: {
         username: "",
         displayName: "",
       },
-      menuItems: [
-        { path: "/supervisor", name: "supervisor", title: "Supervisor" },
+      menuItems: [],
+      adminMenuItems: [
+        { path: "/register", title: "New User" },
+        { path: "/registerproject", title: "New Project" },
+        { path: "/createteam", title: "New Team" },
+        { path: "/assignsupervisor", title: "Set Team Supervisor" },
+        { path: "/updateteam", title: "Edit Team" },
         { path: "/report", name: "report", title: "Report" },
       ],
+      supervisorMenuItems: [{ path: "/supervisor", title: "Supervisor" }],
     };
   },
+  computed: {},
   methods: {
     getUserData: function () {
       let self = this;
       axios
-        .get("/api/user")
+        .get("/api/login")
         .then((response) => {
-          console.log(response);
           self.$set(this, "user", response.data.user);
         })
         .catch((errors) => {
-          // console.log(errors);
+          if ((errors = "Request failed with status code 401")) {
+            // alert("You are not authorized to view this resource because you are not an admin.");
+          }
+          console.log("in error");
           this.$router.push("/").catch(() => {});
         });
+      // axios
+      //   .get("/api/user")
+      //   .then((response) => {
+      //     console.log("this is user ", response.data);
+      //     this.user = { ...response.data.user };
+      //     this.role = response.data.user.role;
+      //     console.log("am i being called", this.role);
+      //     this.show = true;
+      //   })
+      //   .catch((errors) => {
+      //     console.log("error api call", errors);
+      //     // this.$router.push("/").catch(() => {});
+      //   });
+      this.role = this.user.role;
+      if (this.role == "admin") {
+        this.menuItems = [...this.adminMenuItems];
+      }
+      if (this.role == "supervisor") {
+        this.menuItems = [...this.supervisorMenuItems];
+      }
+      console.log("am i being called", this.user);
+      console.log("am i being called", this.role);
     },
     logout: function () {
       let self = this;
       axios
         .get("/api/logout")
         .then((response) => {
-          console.log(response);
           self.$set(this, "user", response.data.user);
-          //this.$router.push("/").catch(() => {});
           router.push("/");
         })
         .catch((errors) => {
-          console.log(errors);
-          //this.$router.push("/").catch(() => {});
           router.push("/");
         });
     },
   },
   mounted() {
     this.getUserData();
+    this.menuItems = this.adminMenuItems;
   },
 };
 </script>
