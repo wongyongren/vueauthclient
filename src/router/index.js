@@ -4,16 +4,14 @@ import Login from "@/components/Login"
 import Dashboard from "@/components/Dashboard"
 import Register from "@/components/Register"
 import RegisterProject from "@/components/RegisterProject"
-import RegisterWorker from "@/components/RegisterWorker"
-import Home from "@/components/HelloWorld"
+//import RegisterWorker from "@/components/RegisterWorker"
 import UserDashboard from "@/components/UserDashboard"
-import AssignWorker from "@/components/AssignWorker"
-import AssignProject from "@/components/AssignProject"
+import CreateTeam from "@/components/CreateTeam"
 import AssignSupervisor from "@/components/AssignSupervisor"
-import UpdateAssignWorker from "@/components/UpdateAssignWorker"
+import UpdateTeam from "@/components/UpdateTeam"
 import test from "@/components/test"
 import Supervisor from "@/components/supervisor/Supervisor"
-
+import Report from "@/components/report/Report"
 
 Vue.use(Router)
 
@@ -36,11 +34,6 @@ export default new Router({
       component: Register
     },
     {
-      path: "/home",
-      name: "Home",
-      component: Home
-    },
-    {
       path: "/userdashboard",
       name: "UserDashboard",
       component: UserDashboard
@@ -50,20 +43,15 @@ export default new Router({
       name: "RegisterProject",
       component: RegisterProject
     },
+    // {
+    //   path: "/registerworker",
+    //   name: "RegisterWorker",
+    //   component: RegisterWorker
+    // },
     {
-      path: "/registerworker",
-      name: "RegisterWorker",
-      component: RegisterWorker
-    },
-    {
-      path: "/assignworker",
-      name: "AssignWorker",
-      component: AssignWorker
-    },
-    {
-      path: "/assignproject",
-      name: "AssignProject",
-      component: AssignProject
+      path: "/createteam",
+      name: "CreateTeam",
+      component: CreateTeam 
     },
     {
       path: "/assignsupervisor",
@@ -71,9 +59,9 @@ export default new Router({
       component: AssignSupervisor
     },
     {
-      path: "/updateassignworker",
-      name: "UpdateAssignWorker",
-      component: UpdateAssignWorker
+      path: "/updateteam",
+      name: "UpdateTeam",
+      component: UpdateTeam
     },
     {
       path: "/test",
@@ -84,6 +72,11 @@ export default new Router({
       path: "/supervisor",
       name: "Supervisor",
       component: Supervisor
+    },
+    {
+      path: "/report",
+      name: "Report",
+      component: Report
     }
   ]
 })

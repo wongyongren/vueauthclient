@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1 style="padding-top: 100px; padding-bottom: 100px">
-      Project Register Page
+      Create Project
     </h1>
     <v-spacer></v-spacer>
     <v-form v-model="valid" v-on:submit="register">

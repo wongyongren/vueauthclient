@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1 style="padding-top: 100px; padding-bottom: 100px">
-      Assign Worker to Team
+      Create Team and Assign Worker
     </h1>
 
     <v-spacer></v-spacer>
