@@ -1,6 +1,6 @@
 <template>
   <div data-app>
-    <Header />
+
     <v-col>
       <h1>Supervisor Page</h1>
       <br />

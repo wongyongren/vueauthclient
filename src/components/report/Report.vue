@@ -1,6 +1,5 @@
 <template>
   <div data-app>
-    <Header />
     <v-col style="text-align: center">
       <v-container>
         <h1>Report Page</h1>
@@ -25,13 +24,11 @@
 </template>
 
 <script>
-import Header from "@/components/header.vue";
 import ReportList from "@/components/report/ReportList.vue";
 
 export default {
   name: "Report",
   components: {
-    Header,
     ReportList,
   },
   data() {

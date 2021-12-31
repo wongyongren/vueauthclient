@@ -139,9 +139,7 @@ export default {
             }
           })
           .catch((errors) => {
-            console.log("Cannot Register");
-            console.log(errors);
-            alert("Duplicate Project Name");
+            alert("No worker found in this team, Please add worker into team at Edit Team page");
           });
       };
       filtersupervisor();

@@ -36,8 +36,7 @@
       </v-row>
     </v-form>
     <br /><br />
-    <v-btn @click="goToEvents()">Sign Up</v-btn>
-    <br /><br />
+
     <v-row>
       <v-snackbar v-model="snackbar">
         User not found or password not match
@@ -56,40 +55,33 @@ import axios from "axios";
 export default {
   name: "Login",
   methods: {
-    goToEvents: function () {
-      location.href = "/register";
-    },
     login: function (e) {
       e.preventDefault();
       let username = e.target.elements.username.value;
       let password = e.target.elements.password.value;
 
-        let self = this;
-        let data = {
-          username: username,
-          password: password,
-        };
-        axios
-          .post("/api/login", data)
-          .then((response) => {
-            console.log(response.data);
-            if (response.data.teamrole == 1) {
-              this.$router.push("/supervisor").catch(() => {});
-            }else if (response.data.role == 1) {
-              this.$router.push("/dashboard").catch(() => {});
-            }else if (response.data.role == 0) {
-              this.$router.push("/userdashboard").catch(() => {});
-            }
-          })
-          .catch((errors) => {
-            console.log(errors);
-            if ((errors = "Request failed with status code 401")) {
-              //console.log("1231231232132132")
-              self.$set(this, "snackbar", true);
-            }
-          });
-
-
+      let self = this;
+      let data = {
+        username: username,
+        password: password,
+      };
+      axios
+        .post("/api/login", data)
+        .then((response) => {
+          if (response.data.teamrole == 1) {
+            this.$router.push("/supervisor").catch(() => {});
+          } else if (response.data.role == 1) {
+            this.$router.push("/dashboard").catch(() => {});
+          } else if (response.data.role == 0) {
+            this.$router.push("/userdashboard").catch(() => {});
+          }
+        })
+        .catch((errors) => {
+          console.log(errors);
+          if ((errors = "Request failed with status code 401")) {
+            self.$set(this, "snackbar", true);
+          }
+        });
     },
   },
   data: () => ({
@@ -107,6 +99,7 @@ export default {
       // (v) => /.+@.+/.test(v) || "E-mail must be valid",
     ],
   }),
+  mounted() {},
 };
 </script>
 
