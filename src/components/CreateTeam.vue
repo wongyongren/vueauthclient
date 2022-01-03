@@ -42,7 +42,7 @@
             :rules="workernameRules"
             name="workername"
             item-value="employeeid"
-            item-text="name"
+            item-text="employeename"
             label="Worker Name"
             multiple
             chips
@@ -122,7 +122,7 @@ export default {
     getWorkerData: function () {
       let self = this;
       axios
-        .get("/api/workername")
+        .get("/api/employeename")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             self.workernameOption.push(

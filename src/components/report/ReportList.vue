@@ -2,7 +2,9 @@
   <v-card>
     <table v-for="site in sites" :key="site" id="customers">
       <tr>
-        <th style="background-color: black" colspan="3">{{ site.projectname }}</th>
+        <th style="background-color: black" colspan="3">
+          {{ site.projectname }}
+        </th>
       </tr>
       <tr>
         <th>Worker Name</th>
@@ -11,13 +13,13 @@
       </tr>
       <tr v-for="site in sites" :key="site">
         <td>
-          {{site.employeename}}
+          {{ site.employeename }}
         </td>
-        <td >
-          {{site.datein + " " +site.clockin}}
+        <td>
+          {{ site.datein + " " + site.clockin }}
         </td>
-        <td >
-          {{site.dateout + " " +site.clockout}}
+        <td>
+          {{ site.dateout + " " + site.clockout }}
         </td>
       </tr>
       <br />
@@ -39,12 +41,27 @@ export default {
     getUserData: function () {
       let self = this;
       axios
+        .get("/api/user")
+        .then((response) => {
+          self.$set(this, "user", response.data.user);
+        })
+        .catch((errors) => {
+          if ((errors = "Request failed with status code 401")) {
+            // alert("You are not authorized to view this resource because you are not an admin.");
+          }
+
+          this.$router.push("/").catch(() => {});
+        });
+    },
+    getUserData: function () {
+      let self = this;
+      axios
         .get("/api/reportlist")
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            self.sites.push(response.data[i]);
-
-          }
+          console.log(response);
+          // for (let i = 0; i < response.data.length; i++) {
+          //   self.sites.push(response.data[i]);
+          // }
         })
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {
@@ -54,7 +71,7 @@ export default {
     },
   },
   mounted() {
-    this.getUserData(); // router at here
+    this.getUserData();
   },
 };
 </script>
