@@ -12,6 +12,7 @@ import UpdateTeam from "@/components/UpdateTeam"
 import test from "@/components/test"
 import Supervisor from "@/components/supervisor/Supervisor"
 import Report from "@/components/report/Report"
+import SupervisorReport from "@/components/supervisor/ReportList"
 
 Vue.use(Router)
 
@@ -56,7 +57,7 @@ export default new Router({
     {
       path: "/createteam",
       name: "CreateTeam",
-      component: CreateTeam 
+      component: CreateTeam
     },
     {
       path: "/assignsupervisor",
@@ -82,6 +83,11 @@ export default new Router({
       path: "/report",
       name: "Report",
       component: Report
-    }
+    },
+    {
+      path: "/supervisor/reportlist",
+      name: "SupervisorReport",
+      component: SupervisorReport
+    },
   ]
 })

@@ -1,6 +1,5 @@
 <template>
   <div data-app>
-
     <v-col>
       <h1>Supervisor Page</h1>
       <br />
@@ -23,7 +22,11 @@
                 item-text="projectname"
                 @input="filterteammember"
                 required
-              ></v-select>
+              >
+                <template slot="item" slot-scope="{ item }">
+                  {{ item.projectname }} - {{ item.teamname }}
+                </template></v-select
+              >
             </v-col>
 
             <v-col cols="12" sm="6">
@@ -286,8 +289,10 @@ export default {
         .get("/api/supervisor")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
+            console.log(response.data[i])
             self.selectOption.push(response.data[i]);
           }
+          //console.log(this.selectOption)
         })
         .catch((errors) => {
           if ((errors = "Request failed with status code 401")) {

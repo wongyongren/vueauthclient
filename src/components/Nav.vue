@@ -66,6 +66,8 @@ export default {
         { path: "/assignsupervisor", title: "Set Team Supervisor" },
         { path: "/updateteam", title: "Edit Team" },
         { path: "/report", title: "Report" },
+        { path: "/supervisor/reportlist", title: "Report list" },
+        { path: "/test", title: "test" },
       ],
       supervisorMenuItems: [{ path: "/supervisor", title: "Supervisor" }],
     };
