@@ -153,7 +153,6 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-
                 <v-date-picker v-model="dateout" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu2 = false">
