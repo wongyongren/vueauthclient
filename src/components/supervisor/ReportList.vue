@@ -13,6 +13,8 @@
         ></v-container
       >
     </v-col>
+    {{modeldatein}}
+{{editedItem}}
     <v-data-table
       :headers="headers"
       :items="datas"
@@ -52,13 +54,14 @@
                         disabled
                       ></v-text-field>
                     </v-col>
-
+{{modeldatein}}
+{{editedItem}}
                     <v-col cols="12" sm="6" md="4">
                       <v-menu
                         ref="refdatein"
                         v-model="modeldatein"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.datein"
+                        :return-value.sync="edited"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
@@ -144,7 +147,7 @@
                         ref="refdateout"
                         v-model="modeldateout"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.dateout"
+                        :return-value.sync="edited"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
@@ -302,19 +305,19 @@ export default {
     ],
     defaultItem: {
       employeename: "",
-      projectname: "",
-      datein: "",
-      clockin: 0,
-      dateout: "",
-      clockout: 0,
+      projectname: null,
+      datein: null,
+      clockin: null,
+      dateout: null,
+      clockout: null,
     },
     editedItem: {
       employeename: "",
-      projectname: "",
-      datein: "",
-      clockin: 0,
-      dateout: "",
-      clockout: 0,
+      projectname: null,
+      datein: null,
+      clockin: null,
+      dateout: null,
+      clockout: null,
     },
     // desserts: [],
     editedIndex: -1,
@@ -393,22 +396,25 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
-      var value = this.datas[this.editedIndex];
-      console.log(value)
       if (this.editedIndex > -1) {
+        let value = this.editedItem;
+                      console.log(this.datas[this.editedIndex]);
+              console.log(this.editedItem);
+        console.log(value);
         let data = {
           workertimeid: value.workertimeid,
-          clockin:value.clockin,
-          clockout:value.clockout,
-          datein:value.datein,
-          dateout:value.dateout,
+          clockin: value.clockin,
+          clockout: value.clockout,
+          datein: value.datein,
+          dateout: value.dateout,
         };
         axios
           .post("/api/updateworkertime", data)
           .then((response) => {
             if ((response.status = 200)) {
+              console.log(this.datas[this.editedIndex]);
+              console.log(this.editedItem);
               Object.assign(this.datas[this.editedIndex], this.editedItem);
               console.log(response);
             }
@@ -417,10 +423,23 @@ export default {
             console.log(errors);
           });
       } else {
+        console.log("567");
         this.datas.push(this.editedItem);
-      }
-      this.close();
+       }
+       this.close();
     },
+    // save() {
+    //   if (this.editedIndex > -1) {
+    //     console.log(this.datas[this.editedIndex]);
+    //     let value = this.datas[this.editedIndex];
+    //     console.log(value);
+    //     Object.assign(this.datas[this.editedIndex], this.editedItem);
+    //   } else {
+    //     this.datas.push(this.editedItem);
+      
+    //   }
+    //   this.close();
+    // },
   },
   computed: {
     formTitle() {

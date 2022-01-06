@@ -7,7 +7,7 @@
         <v-form v-model="checkvalid" v-on:submit="update">
           <v-row align="center">
             <v-col cols="12" sm="6">
-              <v-card-title v-text="'Project Site Name'"></v-card-title>
+              <v-card-title ><icon-base icon-name="project" width="30" height="30"> <icon-moon /> </icon-base> &nbsp; Project Site Name</v-card-title>
             </v-col>
 
             <v-col cols="12" sm="6">
@@ -50,7 +50,6 @@
             <v-col cols="12" sm="6">
               <v-card-title v-text="'Select Date & Time'"></v-card-title>
             </v-col>
-
             <v-col cols="12" sm="3" md="3">
               <v-menu
                 ref="menu1"
@@ -225,12 +224,16 @@
 
 <script>
 // @ is an alias to /src
+import IconBase from './IconBase.vue'
+import IconMoon from './IconMoon.vue'
 import Header from "@/components/header.vue";
 import axios from "axios";
 export default {
   name: "Supervisor",
   components: {
     Header,
+    IconBase,
+    IconMoon,
   },
 
   data() {
