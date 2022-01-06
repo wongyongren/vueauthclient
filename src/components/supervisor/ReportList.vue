@@ -13,8 +13,6 @@
         ></v-container
       >
     </v-col>
-    {{ modeldatein }}
-    {{ editedItem }}
     <v-data-table
       :headers="headers"
       :items="datas"
@@ -54,8 +52,6 @@
                         disabled
                       ></v-text-field>
                     </v-col>
-                    {{ modeldatein }}
-                    {{ editedItem }}
                     <v-col cols="12" sm="6" md="4">
                       <v-menu
                         ref="refdatein"
@@ -399,9 +395,8 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         let value = this.editedItem;
-        console.log(this.datas[this.editedIndex]);
-        console.log(this.editedItem);
-        console.log(value);
+        Object.assign(this.datas[this.editedIndex], this.editedItem);
+        
         let data = {
           workertimeid: value.workertimeid,
           clockin: value.clockin,
@@ -413,9 +408,6 @@ export default {
           .post("/api/updateworkertime", data)
           .then((response) => {
             if ((response.status = 200)) {
-              console.log(this.datas[this.editedIndex]);
-              console.log(this.editedItem);
-              Object.assign(this.datas[this.editedIndex], this.editedItem);
               console.log(response);
             }
           })
