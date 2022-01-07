@@ -16,8 +16,9 @@
     <v-data-table
       :headers="headers"
       :items="datas"
-      sort-by="calories"
+      sort-by="datein"
       class="elevation-1"
+      
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -42,6 +43,13 @@
                       <v-text-field
                         v-model="editedItem.employeename"
                         label="employeename"
+                        :readonly="true"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.teamname"
+                        label="projectname"
                         disabled
                       ></v-text-field>
                     </v-col>
@@ -52,7 +60,7 @@
                         disabled
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" sm="6" md="6">
                       <v-menu
                         ref="refdatein"
                         v-model="modeldatein"
@@ -96,7 +104,7 @@
                       </v-menu>
                     </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" sm="6" md="6">
                       <v-dialog
                         ref="refclockin"
                         v-model="modelclockin"
@@ -138,7 +146,7 @@
                       </v-dialog>
                     </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" sm="6" md="6">
                       <v-menu
                         ref="refdateout"
                         v-model="modeldateout"
@@ -181,7 +189,7 @@
                         </v-date-picker>
                       </v-menu>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" sm="6" md="6">
                       <v-dialog
                         ref="refclockout"
                         v-model="modelclockout"
@@ -231,7 +239,7 @@
                 <v-btn color="blue darken-1" text @click="close">
                   Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="blue darken-1" text @click="save" refresh> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -289,9 +297,9 @@ export default {
       {
         text: "employeename",
         align: "start",
-        sortable: false,
         value: "employeename",
       },
+      { text: "teamname", value: "teamname" },
       { text: "projectname", value: "projectname" },
       { text: "datein", value: "datein" },
       { text: "clockin", value: "clockin" },
@@ -395,43 +403,40 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         let value = this.editedItem;
-        Object.assign(this.datas[this.editedIndex], this.editedItem);
-        
-        let data = {
-          workertimeid: value.workertimeid,
-          clockin: value.clockin,
-          clockout: value.clockout,
-          datein: value.datein,
-          dateout: value.dateout,
-        };
-        axios
-          .post("/api/updateworkertime", data)
-          .then((response) => {
-            if ((response.status = 200)) {
-              console.log(response);
-            }
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
+        if (value.clockout <= value.clockin || value.dateout < value.datein) {
+          alert(
+            "Date Out or Clock Out value is early than Date in or Clock In value"
+          );
+        } else {
+          let data = {
+            workertimeid: value.workertimeid,
+            clockin: value.clockin,
+            clockout: value.clockout,
+            datein: value.datein,
+            dateout: value.dateout,
+          };
+          axios
+            .post("/api/updateworkertime", data)
+            .then((response) => {
+              if (response.status = 200) {
+                //console.log(response);
+              }
+            })
+            .catch((errors) => {
+              if ((errors = "Error: Request failed with status code 500")) {
+                //console.log(errors);
+                alert("Worker has duplicate project in one day");
+                this.getUserData();
+              }
+            });
+          Object.assign(this.datas[this.editedIndex], this.editedItem);
+        }
       } else {
-        console.log("567");
         this.datas.push(this.editedItem);
       }
+
       this.close();
     },
-    // save() {
-    //   if (this.editedIndex > -1) {
-    //     console.log(this.datas[this.editedIndex]);
-    //     let value = this.datas[this.editedIndex];
-    //     console.log(value);
-    //     Object.assign(this.datas[this.editedIndex], this.editedItem);
-    //   } else {
-    //     this.datas.push(this.editedItem);
-
-    //   }
-    //   this.close();
-    // },
   },
   computed: {
     formTitle() {

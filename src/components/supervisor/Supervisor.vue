@@ -7,7 +7,12 @@
         <v-form v-model="checkvalid" v-on:submit="update">
           <v-row align="center">
             <v-col cols="12" sm="6">
-              <v-card-title ><icon-base icon-name="project" width="30" height="30"> <icon-moon /> </icon-base> &nbsp; Project Site Name</v-card-title>
+              <v-card-title
+                ><icon-base icon-name="project" width="30" height="30">
+                  <icon-moon />
+                </icon-base>
+                &nbsp; Project Site Name</v-card-title
+              >
             </v-col>
 
             <v-col cols="12" sm="6">
@@ -224,8 +229,8 @@
 
 <script>
 // @ is an alias to /src
-import IconBase from './IconBase.vue'
-import IconMoon from './IconMoon.vue'
+import IconBase from "./IconBase.vue";
+import IconMoon from "./IconMoon.vue";
 import Header from "@/components/header.vue";
 import axios from "axios";
 export default {
@@ -264,26 +269,43 @@ export default {
     update: function (e) {
       e.preventDefault();
       var workerid = this.worker_name.toString().split(",");
-      let data = {
-        teamid: this.projectname,
-        projectid: this.projectid,
-        workerid: workerid,
-        datein: this.datein,
-        timein: this.timein,
-        dateout: this.dateout,
-        timeout: this.timeout,
-      };
-      axios
-        .post("/api/insertworkertime", data)
-        .then((response) => {
-          //console.log("Update Success");
-          //console.log(response);
-        })
-        .catch((errors) => {
-          //console.log("Cannot Update");
-          console.log(errors);
-          alert("Allow one worker and one project at a time");
-        });
+      if (this.timeout <= this.timein || this.dateout < this.datein) {
+        alert(
+          "Date Out or Clock Out value is early than Date in or Clock In value"
+        );
+        this.projectname = null;
+        this.timein = null;
+        this.timeout = null;
+        this.worker_name = null;
+        this.datein = new Date(
+          Date.now() - new Date().getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .substr(0, 10);
+        this.dateout = new Date(
+          Date.now() - new Date().getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .substr(0, 10);
+      } else {
+        let data = {
+          teamid: this.projectname,
+          projectid: this.projectid,
+          workerid: workerid,
+          datein: this.datein,
+          timein: this.timein,
+          dateout: this.dateout,
+          timeout: this.timeout,
+        };
+        axios
+          .post("/api/insertworkertime", data)
+          .then((response) => {
+          })
+          .catch((errors) => {
+            console.log(errors);
+            alert("Allow one worker and one project at a time");
+          });
+      }
     },
     getUserData: function () {
       let self = this;
@@ -291,7 +313,7 @@ export default {
         .get("/api/supervisor")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            console.log(response.data[i])
+            console.log(response.data[i]);
             self.selectOption.push(response.data[i]);
           }
           //console.log(this.selectOption)
