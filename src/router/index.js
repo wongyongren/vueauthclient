@@ -13,6 +13,10 @@ import test from "@/components/test"
 import Supervisor from "@/components/supervisor/Supervisor"
 import Report from "@/components/report/Report"
 import SupervisorReport from "@/components/supervisor/ReportList"
+import UserReport from "@/components/user/UserList"
+import ProjectList from "@/components/project/ProjectList"
+import TeamList from "@/components/team/TeamList"
+import EmployeeList from "@/components/employee/EmployeeList"
 
 Vue.use(Router)
 
@@ -88,6 +92,22 @@ export default new Router({
       path: "/supervisor/reportlist",
       name: "SupervisorReport",
       component: SupervisorReport
+    }, {
+      path: "/user/reportlist",
+      name: "UserReport",
+      component: UserReport
+    }, {
+      path: "/project/projectlist",
+      name: "ProjectList",
+      component: ProjectList
+    }, {
+      path: "/team/teamlist",
+      name: "TeamList",
+      component: TeamList
+    }, {
+      path: "/employee/employeelist",
+      name: "EmployeeList",
+      component: EmployeeList
     },
   ]
 })

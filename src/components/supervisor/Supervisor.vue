@@ -28,6 +28,10 @@
                 @input="filterteammember"
                 required
               >
+                <template slot="selection" slot-scope="{ item }">
+                  <!-- HTML that describe how select should render selected items -->
+                  {{ item.projectname }} - {{ item.teamname }}
+                </template>
                 <template slot="item" slot-scope="{ item }">
                   {{ item.projectname }} - {{ item.teamname }}
                 </template></v-select
@@ -88,10 +92,11 @@
               </v-menu>
             </v-col>
             <v-col cols="12" sm="3" md="3">
-              <v-dialog
+              <v-menu
                 ref="dialog1"
                 v-model="modal1"
                 :return-value.sync="timein"
+                :close-on-content-click="false"
                 persistent
                 width="290px"
               >
@@ -103,6 +108,7 @@
                     readonly
                     v-bind="attrs"
                     v-on="on"
+                    clearable
                   ></v-text-field>
                 </template>
                 <v-time-picker
@@ -123,7 +129,7 @@
                     OK
                   </v-btn>
                 </v-time-picker>
-              </v-dialog>
+              </v-menu>
             </v-col>
             <v-col cols="12" sm="6">
               <v-card-title
@@ -173,10 +179,11 @@
               </v-menu>
             </v-col>
             <v-col cols="12" sm="3" md="3">
-              <v-dialog
+              <v-menu
                 ref="dialog2"
                 v-model="modal2"
                 :return-value.sync="timeout"
+                :close-on-content-click="false"
                 persistent
                 width="290px"
               >
@@ -188,6 +195,7 @@
                     readonly
                     v-bind="attrs"
                     v-on="on"
+                    clearable
                   ></v-text-field>
                 </template>
                 <v-time-picker
@@ -197,6 +205,7 @@
                   format="24hr"
                 >
                   <v-spacer></v-spacer>
+                  
                   <v-btn text color="primary" @click="modal2 = false">
                     Cancel
                   </v-btn>
@@ -207,8 +216,9 @@
                   >
                     OK
                   </v-btn>
+                  
                 </v-time-picker>
-              </v-dialog>
+              </v-menu>
             </v-col>
             <v-col cols="12" sm="6">
               <v-card-title
@@ -300,6 +310,7 @@ export default {
         axios
           .post("/api/insertworkertime", data)
           .then((response) => {
+            console.log(response);
           })
           .catch((errors) => {
             console.log(errors);
@@ -313,7 +324,7 @@ export default {
         .get("/api/supervisor")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            console.log(response.data[i]);
+            //console.log(response.data[i]);
             self.selectOption.push(response.data[i]);
           }
           //console.log(this.selectOption)
