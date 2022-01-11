@@ -17,6 +17,7 @@ import UserReport from "@/components/user/UserList"
 import ProjectList from "@/components/project/ProjectList"
 import TeamList from "@/components/team/TeamList"
 import EmployeeList from "@/components/employee/EmployeeList"
+import EmployeeEdit from "@/components/employee/EmployeeEdit"
 
 Vue.use(Router)
 
@@ -108,6 +109,10 @@ export default new Router({
       path: "/employee/employeelist",
       name: "EmployeeList",
       component: EmployeeList
+    }, {
+      path: "/employee/employeeedit",
+      name: "EmployeeEdit",
+      component: EmployeeEdit
     },
   ]
 })

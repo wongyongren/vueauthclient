@@ -15,14 +15,17 @@
         <v-toolbar flat>
           <v-spacer></v-spacer>
           <template>
+            <v-btn color="primary" dark class="mb-2" :to="{ path: '/employee/employeeedit', query: { plan: 'private' } }">
+
+              Edit Item
+
+              
+            </v-btn>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <v-btn color="primary" dark class="mb-2" :to="'/register'">
               New Item
             </v-btn>
           </template>
-          <v-dialog v-model="dialog" max-width="500px">
-
-          </v-dialog>
-
         </v-toolbar>
       </template>
     </v-data-table>
@@ -40,8 +43,9 @@ export default {
         align: "start",
         value: "employeeid",
       },
-      { text: "User Name", value: "employeename" },
-         ],
+      { text: "Employee Name", value: "employeename" },
+      { text: "Login User Name", value: "username" },
+    ],
     editedIndex: -1,
   }),
   methods: {
