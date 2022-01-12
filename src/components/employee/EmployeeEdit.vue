@@ -2,7 +2,6 @@
   <v-container>
     <h1 style="padding-top: 100px; padding-bottom: 100px">
       Edit Employee Page
-      
     </h1>
     <v-spacer></v-spacer>
     <v-form v-model="valid" v-on:submit="updateemploeyee">
@@ -50,28 +49,21 @@
 import axios from "axios";
 
 export default {
-  name: "Edit Employee",
   methods: {
-      init () {
-      console.log(this.$route);  //should return object
-      console.log(this.$route.query); //should return object 
-    },
-
-    updateemploeyee: (e) => {
-      e.preventDefault();
-      let employeename = e.target.elements.employeename.value;
-      let userid = e.target.elements.userid.value;
-      let employeeid = e.target.elements.employeeid.value;
+    updateemploeyee: function () {
+      let employeename = this.employee_name;
+      let userid = this.worker_name;
+      let employeeid = this.workerid;
       let data = {
         employeename: employeename,
         userid: userid,
         employeeid: employeeid,
       };
+      console.log(data);
       axios
         .post("/api/updateemployee", data)
         .then((response) => {
           console.log("register");
-          //router.push("/");
         })
         .catch((errors) => {
           console.log("Cannot Register");
@@ -80,6 +72,24 @@ export default {
         });
     },
     getWorkerData: function () {
+      this.workerid = this.$route.params.userid;
+      let self = this;
+      let data = {
+        employeeid: this.$route.params.userid,
+      };
+      axios
+        .post("/api/displayemployee", data)
+        .then((response) => {
+          self.employee_name = response.data.employeename;
+          self.worker_name = response.data.userid;
+        })
+        .catch((errors) => {
+          console.log("Cannot Register");
+          console.log(errors);
+          alert("Duplicate User Name");
+        });
+    },
+    getLoginUserData: function () {
       let self = this;
       axios
         .get("/api/workername")
@@ -96,24 +106,15 @@ export default {
     },
   },
   mounted() {
+    this.getLoginUserData();
     this.getWorkerData();
-    this.init()
-  },
-  computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword || "Password must match";
-    },
   },
   data: () => ({
     worker_name: [],
     workernameOption: [],
+    workerid: null,
     valid: false,
     employee_name: "",
-    nameRules: [
-      (v) => !!v || "Name is required",
-      // (v) => v.length <= 10 || "Name must be less than 6 characters",
-    ],
     usernameRules: [
       (v) => !!v || "User Name is required",
       // (v) => v.length <= 10 || "Name must be less than 6 characters",

@@ -90,7 +90,7 @@ export default {
             // alert("You are not authorized to view this resource because you are not an admin.");
           }
           console.log("in error");
-          this.$router.push("/").catch(() => {});
+          //this.$router.push("/").catch(() => {});
         });
       // axios
       //   .get("/api/user")

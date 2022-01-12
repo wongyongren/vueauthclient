@@ -110,7 +110,7 @@ export default new Router({
       name: "EmployeeList",
       component: EmployeeList
     }, {
-      path: "/employee/employeeedit",
+      path: "/employee/employeeedit/:userid",
       name: "EmployeeEdit",
       component: EmployeeEdit
     },

@@ -15,11 +15,9 @@
         <v-toolbar flat>
           <v-spacer></v-spacer>
           <template>
-            <v-btn color="primary" dark class="mb-2" :to="{ path: '/employee/employeeedit', query: { plan: 'private' } }">
-
+            <!-- datas.employeeid will change to selected user id-->
+            <v-btn color="primary" dark class="mb-2" :to="{ path: '/employee/employeeedit/' + userid }">
               Edit Item
-
-              
             </v-btn>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <v-btn color="primary" dark class="mb-2" :to="'/register'">
@@ -37,6 +35,7 @@ import axios from "axios";
 export default {
   data: () => ({
     datas: [],
+    userid:1,
     headers: [
       {
         text: "ID",
