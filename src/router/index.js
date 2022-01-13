@@ -14,8 +14,11 @@ import Supervisor from "@/components/supervisor/Supervisor"
 import Report from "@/components/report/Report"
 import SupervisorReport from "@/components/supervisor/ReportList"
 import UserReport from "@/components/user/UserList"
+import UserEdit from "@/components/user/UserEdit"
 import ProjectList from "@/components/project/ProjectList"
+import ProjectEdit from "@/components/project/ProjectEdit"
 import TeamList from "@/components/team/TeamList"
+import TeamEdit from "@/components/team/TeamEdit"
 import EmployeeList from "@/components/employee/EmployeeList"
 import EmployeeEdit from "@/components/employee/EmployeeEdit"
 
@@ -97,14 +100,26 @@ export default new Router({
       path: "/user/reportlist",
       name: "UserReport",
       component: UserReport
-    }, {
+    },  {
+      path: "/user/useredit/:userid",
+      name: "UserEdit",
+      component: UserEdit
+    },{
       path: "/project/projectlist",
       name: "ProjectList",
       component: ProjectList
     }, {
+      path: "/project/projectedit/:projectid",
+      name: "ProjectEdit",
+      component: ProjectEdit
+    }, {
       path: "/team/teamlist",
       name: "TeamList",
       component: TeamList
+    },  {
+      path: "/team/teamedit/:teamid",
+      name: "TeamEdit",
+      component: TeamEdit
     }, {
       path: "/employee/employeelist",
       name: "EmployeeList",

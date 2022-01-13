@@ -15,11 +15,19 @@
         <v-toolbar flat>
           <v-spacer></v-spacer>
           <template>
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              :to="{ path: '/team/teamedit/' + teamid }"
+            >
+              Edit Item
+            </v-btn>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
             <v-btn color="primary" dark class="mb-2" :to="'/createteam'">
               New Item
             </v-btn>
           </template>
-
         </v-toolbar>
       </template>
     </v-data-table>
@@ -31,6 +39,7 @@ import axios from "axios";
 export default {
   data: () => ({
     datas: [],
+    teamid:1,
     headers: [
       {
         text: "Name",
@@ -38,7 +47,8 @@ export default {
         value: "teamname",
       },
       { text: "Team Description", value: "description" },
-      { text: "Project Name", value: "projectname" }    ],
+      { text: "Project Name", value: "projectname" },
+    ],
     editedIndex: -1,
   }),
   methods: {

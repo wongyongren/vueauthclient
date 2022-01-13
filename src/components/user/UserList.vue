@@ -15,6 +15,15 @@
         <v-toolbar flat>
           <v-spacer></v-spacer>
           <template>
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              :to="{ path: '/user/useredit/' + userid }"
+            >
+              Edit Item
+            </v-btn>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <v-btn color="primary" dark class="mb-2" :to="'/register'">
               New Item
             </v-btn>
@@ -30,6 +39,7 @@ import axios from "axios";
 export default {
   data: () => ({
     datas: [],
+    userid:1,
     headers: [
       {
         text: "Name",

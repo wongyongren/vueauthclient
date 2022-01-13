@@ -15,6 +15,10 @@
         <v-toolbar flat>
           <v-spacer></v-spacer>
           <template>
+            <v-btn color="primary" dark class="mb-2" :to="{ path: '/project/projectedit/' + projectid }">
+              Edit Item
+            </v-btn>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <v-btn color="primary" dark class="mb-2" :to="'/registerproject'">
               New Item
             </v-btn>
@@ -30,6 +34,7 @@ import axios from "axios";
 export default {
   data: () => ({
     datas: [],
+    projectid: 1,
     headers: [
       {
         text: "ID",
