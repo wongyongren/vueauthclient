@@ -66,9 +66,7 @@ export default {
           console.log("register");
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
+          alert("Duplicate Worker Name");
         });
     },
     getWorkerData: function () {
@@ -84,9 +82,7 @@ export default {
           self.worker_name = response.data.userid;
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
+          alert("Worker Name List Error");
         });
     },
     getLoginUserData: function () {
@@ -99,9 +95,7 @@ export default {
           }
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("worker name list error");
+          alert("Worker Name List Error");
         });
     },
   },
@@ -115,10 +109,7 @@ export default {
     workerid: null,
     valid: false,
     employee_name: "",
-    usernameRules: [
-      (v) => !!v || "User Name is required",
-      // (v) => v.length <= 10 || "Name must be less than 6 characters",
-    ],
+    usernameRules: [(v) => !!v || "User Name is required"],
   }),
 };
 </script>

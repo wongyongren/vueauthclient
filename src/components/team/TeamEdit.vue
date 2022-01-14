@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h1 style="padding-top: 100px; padding-bottom: 100px">
-      Edit Team Page
-    </h1>
+    <h1 style="padding-top: 100px; padding-bottom: 100px">Edit Team Page</h1>
     <v-spacer></v-spacer>
     <v-form v-model="valid" v-on:submit="updateemploeyee">
       <v-row>
@@ -17,7 +15,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-            <v-row>
+      <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-text-field
             v-model="team_description"
@@ -32,17 +30,16 @@
       <v-row>
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-select
-            v-model="worker_name"
-            :items="workernameOption"
+            v-model="project_name"
+            :items="projectnameOption"
             name="workername"
-            item-value="userid"
-            item-text="name"
-            label="Login User Name"
+            item-value="projectid"
+            item-text="projectname"
+            label="Project Name"
             persistent-hint
           ></v-select>
         </v-col>
       </v-row>
-
       <v-row>
         <v-btn
           :disabled="!valid"
@@ -63,67 +60,79 @@ import axios from "axios";
 export default {
   methods: {
     updateemploeyee: function () {
-      let employeename = this.employee_name;
-      let userid = this.worker_name;
-      let employeeid = this.workerid;
+      let teamname = this.team_name;
+      let description = this.team_description;
+      let projectid = this.project_name;
+      let teamid = this.teamid;
       let data = {
-        employeename: employeename,
-        userid: userid,
-        employeeid: employeeid,
+        teamname: teamname,
+        description: description,
+        projectid: projectid,
+        teamid: teamid,
       };
       console.log(data);
       axios
-        .post("/api/updateemployee", data)
+        .post("/api/updateteam", data)
         .then((response) => {
           console.log("register");
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
+          alert("Duplicate Team Name");
         });
     },
-    getWorkerData: function () {
-      this.workerid = this.$route.params.userid;
-      let self = this;
-      let data = {
-        employeeid: this.$route.params.userid,
-      };
-      axios
-        .post("/api/displayemployee", data)
-        .then((response) => {
-          self.employee_name = response.data.employeename;
-          self.worker_name = response.data.userid;
-        })
-        .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
-        });
-    },
-    getLoginUserData: function () {
+    getProjectData: function () {
       let self = this;
       axios
-        .get("/api/workername")
+        .get("/api/projectname")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            self.workernameOption.push(response.data[i]);
+            self.projectnameOption.push(
+              JSON.parse(JSON.stringify(response.data[i]))
+            );
+            
           }
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("worker name list error");
+          if ((errors = "Request failed with status code 401")) {
+            //console.log("1231231232132132");
+            alert(
+              "You are not authorized to view this resource because you are not an admin."
+            );
+          }
+          this.$router.push("/").catch(() => {});
+        });
+    },
+    getTeamData: function () {
+      this.teamid = this.$route.params.teamid;
+      let self = this;
+      let data = {
+        teamid: this.$route.params.teamid,
+      };
+      axios
+        .post("/api/displayteam", data)
+        .then((response) => {
+          self.team_name = response.data.teamname;
+          self.team_description = response.data.description;
+          self.project_name = response.data.projectid;
+          
+        })
+        .catch((errors) => {
+          alert("Duplicate Team Name");
         });
     },
   },
   mounted() {
-    this.getLoginUserData();
-    this.getWorkerData();
+    this.getProjectData();
+
+    //this.getLoginUserData();
+    this.getTeamData();
   },
   data: () => ({
     team_name: [],
     team_description: [],
+    projectnameOption: [],
+    project_name: [],
+    projectid: null,
     teamid: null,
     valid: false,
     employee_name: "",

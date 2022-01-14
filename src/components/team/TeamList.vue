@@ -39,7 +39,7 @@ import axios from "axios";
 export default {
   data: () => ({
     datas: [],
-    teamid:1,
+    teamid:2,
     headers: [
       {
         text: "Name",

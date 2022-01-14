@@ -61,9 +61,7 @@ export default {
           console.log("register");
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
+          alert("Duplicate Project Name");
         });
     },
     getprojectData: function () {
@@ -79,9 +77,7 @@ export default {
           self.project_address = response.data.projectaddress;
         })
         .catch((errors) => {
-          console.log("Cannot Register");
-          console.log(errors);
-          alert("Duplicate User Name");
+          alert("Duplicate Project Name");
         });
     },
   },
@@ -93,11 +89,6 @@ export default {
     project_name: "",
     projectid: null,
     valid: false,
-
-    // usernameRules: [
-    //   (v) => !!v || "User Name is required",
-    //   // (v) => v.length <= 10 || "Name must be less than 6 characters",
-    // ],
   }),
 };
 </script>
